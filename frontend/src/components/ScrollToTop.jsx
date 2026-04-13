@@ -34,7 +34,7 @@ const ScrollToTop = () => {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={scrollToTop}
-                    className="fixed bottom-8 right-8 z-50 group"
+                    className="fixed bottom-8 right-4 md:right-8 z-50 group"
                     aria-label="Scroll to top"
                 >
                     {/* Outer ring with rotation */}

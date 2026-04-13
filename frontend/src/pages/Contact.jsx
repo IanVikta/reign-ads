@@ -172,7 +172,7 @@ const Contact = () => {
 
               <form id="contact-form" onSubmit={handleSubmit} noValidate className="space-y-5">
                 <InputField label="Your Name" required>
-                  <input type="text" name="name" placeholder="John Doe"
+                  <input type="text" name="name" placeholder="Your name"
                     value={form.name} onChange={e => set('name', e.target.value)}
                     className={fieldClass} />
                 </InputField>

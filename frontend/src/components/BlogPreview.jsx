@@ -23,57 +23,63 @@ const BlogCard = ({ post, index, featured = false }) => {
         whileInView="visible"
         viewport={{ once: true, amount: 0.15 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="group col-span-1 md:col-span-2 relative overflow-hidden"
-        style={{ minHeight: 340 }}
+        className="group col-span-1 md:col-span-2 flex flex-col border border-gray-100 bg-white hover:border-blue-100 transition-colors duration-300"
+        style={{ boxShadow: '0 2px 12px rgba(2,32,170,0.04)' }}
       >
-        <Link to={`/blog/${post.slug}`} className="block h-full">
-          {/* Full image */}
-          <motion.img
-            src={post.imageSrc}
-            alt={post.title}
-            className="absolute inset-0 w-full h-full object-cover"
-            whileHover={{ scale: 1.04 }}
-            transition={{ duration: 0.7 }}
-          />
-          {/* Overlay */}
-          <div
-            className="absolute inset-0"
-            style={{ background: 'linear-gradient(to top, rgba(2,32,170,0.92) 0%, rgba(2,32,170,0.5) 50%, transparent 100%)' }}
-          />
-          {/* Content */}
-          <div className="absolute bottom-0 left-0 right-0 p-8">
-            {/* Date + Category pill */}
-            <div className="flex items-center gap-3 mb-3">
-              <span
-                className="text-xs font-black uppercase tracking-widest px-3 py-1"
-                style={{ background: BRAND_GOLD, color: BRAND_BLUE }}
-              >
-                Featured
-              </span>
-              <span className="text-white/50 text-xs">
-                {new Date(post.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-              </span>
-            </div>
-            <h3 className="text-2xl md:text-3xl font-black text-white leading-snug mb-3 group-hover:text-yellow-200 transition-colors">
-              {post.title}
-            </h3>
-            <p className="text-white/65 text-sm leading-relaxed mb-4 max-w-xl">{post.excerpt}</p>
-            <span
-              className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest"
-              style={{ color: BRAND_GOLD }}
+        <Link to={`/blog/${post.slug}`} className="flex flex-col h-full">
+          {/* Image */}
+          <div className="relative overflow-hidden aspect-video">
+            <motion.img
+              src={post.imageSrc}
+              alt={post.title}
+              className="w-full h-full object-cover"
+              whileHover={{ scale: 1.04 }}
+              transition={{ duration: 0.7 }}
+            />
+            {/* Featured badge */}
+            <div
+              className="absolute top-4 left-4 px-3 py-2 text-xs font-black uppercase tracking-widest"
+              style={{ background: BRAND_GOLD, color: BRAND_BLUE }}
             >
-              Read Article →
-            </span>
+              Featured
+            </div>
+            {/* Date badge */}
+            <div
+              className="absolute top-4 right-4 px-3 py-2 text-xs font-black"
+              style={{ background: BRAND_BLUE, color: '#fff' }}
+            >
+              {new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+            </div>
+            {/* Bottom gold bar on hover */}
+            <motion.div
+              className="absolute bottom-0 left-0 h-[3px]"
+              style={{ background: BRAND_GOLD }}
+              initial={{ width: 0 }}
+              whileHover={{ width: '100%' }}
+              transition={{ duration: 0.5 }}
+            />
           </div>
 
-          {/* Bottom gold bar */}
-          <motion.div
-            className="absolute bottom-0 left-0 h-[3px]"
-            style={{ background: BRAND_GOLD }}
-            initial={{ width: 0 }}
-            whileHover={{ width: '100%' }}
-            transition={{ duration: 0.5 }}
-          />
+          {/* Content */}
+          <div className="flex flex-col flex-grow p-8">
+            <h3 className="text-2xl md:text-3xl font-black text-gray-900 leading-snug mb-4 group-hover:text-blue-700 transition-colors">
+              {post.title}
+            </h3>
+            <p className="text-gray-500 text-base leading-relaxed flex-grow mb-6">
+              {post.excerpt}
+            </p>
+            <span
+              className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest transition-colors"
+              style={{ color: BRAND_BLUE }}
+            >
+              Read Article
+              <motion.span
+                className="inline-block"
+                whileHover={{ x: 4 }}
+                transition={{ duration: 0.2 }}
+              >→</motion.span>
+            </span>
+          </div>
         </Link>
       </motion.article>
     );

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link, useSearchParams } from 'react-router-dom'
-import api from '../services/api'
 import { portfolioProjects } from '../data/portfolio'
 
 const BB = '#0220aa'
@@ -15,9 +14,6 @@ const categories = [
   { slug: 'automobile-branding', name: 'Automobile Branding' },
   { slug: 'signage', name: 'Signage' },
 ]
-
-// Real portfolio projects from your images
-const fallbackProjects = portfolioProjects;
 
 const ProjectCard = ({ project, index }) => {
   const dirs = [
@@ -74,9 +70,9 @@ const ProjectCard = ({ project, index }) => {
 }
 
 const Portfolio = () => {
-  const [projects, setProjects] = useState(fallbackProjects)
+  const [projects, setProjects] = useState([])
   const [filter, setFilter] = useState('all')
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [searchParams, setSearchParams] = useSearchParams()
 
   // Set initial filter from URL parameter
@@ -98,14 +94,9 @@ const Portfolio = () => {
   }
 
   useEffect(() => {
-    const fetch = async () => {
-      try {
-        const res = await api.get('/projects')
-        if (res.data?.length) setProjects(res.data)
-      } catch {}
-      finally { setLoading(false) }
-    }
-    fetch()
+    // Use static data instead of API call
+    setProjects(portfolioProjects)
+    setLoading(false)
   }, [])
 
   const filtered = filter === 'all' ? projects : projects.filter(p => p.category?.slug === filter)

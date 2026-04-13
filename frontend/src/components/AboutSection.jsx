@@ -20,7 +20,7 @@ const AboutSection = () => {
           >
             <div className="aspect-video overflow-hidden" style={{ boxShadow: '0 8px 40px rgba(2,32,170,0.10)' }}>
               <img
-                src="/public/images/billboards/billboard1.JPG"
+                src="/images/billboards/billboard1.JPG"
                 alt="Billboard along highway"
                 className="w-full h-full object-cover"
               />
