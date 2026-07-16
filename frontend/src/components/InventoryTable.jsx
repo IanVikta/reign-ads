@@ -1,15 +1,44 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import ScrollReveal from './ScrollReveal';
-import { inventory } from '../data/inventory';
+import api from '../services/api';
 
 const InventoryTable = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [inventory, setInventory] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchInventory();
+  }, []);
+
+  const fetchInventory = async () => {
+    try {
+      const response = await api.get('/inventory');
+      if (response.data.success) {
+        setInventory(response.data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching inventory:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredInventory = inventory.filter((item) =>
     item.location.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  if (loading) {
+    return (
+      <section className="py-20 bg-gradient-to-b from-gray-900 to-reignBlack">
+        <div className="container mx-auto px-6 text-center">
+          <div className="text-reignWhite">Loading inventory...</div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-20 bg-gradient-to-b from-gray-900 to-reignBlack relative overflow-hidden">

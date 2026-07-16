@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { campaigns } from '../data/campaigns';
@@ -105,8 +105,53 @@ const CampaignCard = ({ campaign, index }) => {
 };
 
 const CampaignsGrid = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const visibleCount = isMobile ? 1 : 2;
+  const maxIndex = Math.max(0, campaigns.length - visibleCount);
+
+  // Auto-scroll loop
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
+    }, 4500); // Slide every 4.5s
+    return () => clearInterval(interval);
+  }, [isAutoPlaying, maxIndex]);
+
+  const handleInteraction = (callback) => {
+    setIsAutoPlaying(false);
+    callback();
+    // Resume auto-play after 8 seconds of no interaction
+    const resumeTimer = setTimeout(() => setIsAutoPlaying(true), 8000);
+    return () => clearTimeout(resumeTimer);
+  };
+
+  const next = () => {
+    setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
+  };
+
+  const prev = () => {
+    setCurrentIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
+  };
+
+  const gap = 20;
+  const step = isMobile ? 100 : 50;
+  const gapOffset = isMobile ? gap : gap / 2;
+
   return (
-    <section className="py-14 bg-white">
+    <section className="py-16 bg-white overflow-hidden">
       <div className="container mx-auto px-6">
 
         {/* Header */}
@@ -130,19 +175,42 @@ const CampaignsGrid = () => {
             </p>
           </motion.div>
 
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <h2 className="text-3xl md:text-4xl font-black text-gray-900 leading-tight">
-              Featured <span style={{ color: BRAND_BLUE }}>Campaigns</span>
-            </h2>
-            <motion.p
-              className="text-gray-400 text-sm max-w-xs md:text-right"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-            >
-              Award-winning advertising campaigns that delivered exceptional brand results.
-            </motion.p>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-black text-gray-900 leading-tight uppercase">
+                Featured <span style={{ color: BRAND_BLUE }}>Campaigns</span>
+              </h2>
+            </div>
+            <div className="flex items-center gap-4">
+              <motion.p
+                className="text-gray-400 text-sm max-w-xs md:text-right hidden lg:block"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+              >
+                Award-winning advertising campaigns that delivered exceptional brand results.
+              </motion.p>
+              
+              {/* Navigation Arrows */}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => handleInteraction(prev)}
+                  className="w-10 h-10 border border-gray-200 text-gray-400 hover:border-gray-400 hover:text-gray-700 flex items-center justify-center transition-all text-lg bg-white rounded-full shadow-sm hover:shadow-md"
+                >
+                  ←
+                </button>
+                <button
+                  onClick={() => handleInteraction(next)}
+                  className="w-10 h-10 flex items-center justify-center text-white text-lg transition-all rounded-full shadow-sm hover:shadow-md"
+                  style={{ background: BRAND_BLUE }}
+                  onMouseEnter={e => { e.currentTarget.style.background = BRAND_GOLD; e.currentTarget.style.color = BRAND_BLUE; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = BRAND_BLUE; e.currentTarget.style.color = '#fff'; }}
+                >
+                  →
+                </button>
+              </div>
+            </div>
           </div>
           <motion.div
             className="mt-5 h-px bg-gray-200"
@@ -153,10 +221,39 @@ const CampaignsGrid = () => {
           />
         </motion.div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-12">
-          {campaigns.map((campaign, index) => (
-            <CampaignCard key={campaign.id} campaign={campaign} index={index} />
+        {/* Carousel Viewport */}
+        <div className="relative overflow-hidden py-4">
+          <div 
+            className="flex transition-transform duration-500 ease-out"
+            style={{ 
+              gap: `${gap}px`,
+              transform: `translateX(calc(-${currentIndex * step}% - ${currentIndex * gapOffset}px))` 
+            }}
+          >
+            {campaigns.map((campaign, index) => (
+              <div 
+                key={campaign.id} 
+                className="flex-shrink-0 w-full md:w-[calc(50%-10px)]"
+              >
+                <CampaignCard campaign={campaign} index={index} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Dots indicators */}
+        <div className="flex justify-center items-center gap-2 mt-8">
+          {[...Array(maxIndex + 1)].map((_, i) => (
+            <button
+              key={i}
+              onClick={() => handleInteraction(() => setCurrentIndex(i))}
+              className="rounded-full transition-all duration-300"
+              style={{
+                width: currentIndex === i ? 24 : 8,
+                height: 8,
+                background: currentIndex === i ? BRAND_BLUE : '#e5e7eb',
+              }}
+            />
           ))}
         </div>
 
@@ -166,7 +263,7 @@ const CampaignsGrid = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-center"
+          className="text-center mt-12"
         >
           <Link to="/portfolio">
             <motion.button

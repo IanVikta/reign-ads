@@ -8,12 +8,41 @@ const BG = '#ffd22a'
 
 const categories = [
   { slug: 'all', name: 'All Work' },
-  { slug: 'billboards', name: 'Billboards' },
-  { slug: 'led-screens', name: 'LED Screens' },
-  { slug: 'wall-branding', name: 'Wall Branding' },
-  { slug: 'automobile-branding', name: 'Automobile Branding' },
-  { slug: 'signage', name: 'Signage' },
+  { slug: 'out-of-home', name: 'Out of home' },
+  { slug: 'branding', name: 'Branding' },
+  { slug: 'large-format-printing', name: 'Large format printing' },
+  { slug: 'events-branding', name: 'Events branding & management' },
+  { slug: 'promotional-materials', name: 'Promotional materials' },
 ]
+
+const subCategories = {
+  'out-of-home': [
+    { slug: 'all', name: 'All Out of Home' },
+    { slug: 'led-screens', name: 'LED Screens' },
+    { slug: 'billboards', name: 'Billboards' },
+    { slug: 'billboard-wraps', name: 'Billboard Wraps' },
+    { slug: 'street-poles', name: 'Street Poles' },
+  ],
+  'branding': [
+    { slug: 'all', name: 'All Branding' },
+    { slug: 'creative-design', name: 'Creative Design' },
+    { slug: 'office-branding', name: 'Office Branding' },
+    { slug: 'airport-branding', name: 'Airport Branding' },
+    { slug: 'wall-branding', name: 'Wall Branding' },
+    { slug: 'automobile-branding', name: 'Automobile Branding' },
+    { slug: 'shop-branding', name: 'Shop Branding' },
+    { slug: 'fabrication', name: '3D Signages & Fabrication' },
+  ],
+  'large-format-printing': [
+    { slug: 'all', name: 'All Printing' }
+  ],
+  'events-branding': [
+    { slug: 'all', name: 'All Events' }
+  ],
+  'promotional-materials': [
+    { slug: 'all', name: 'All Promotional' }
+  ]
+}
 
 const ProjectCard = ({ project, index }) => {
   const dirs = [
@@ -29,41 +58,41 @@ const ProjectCard = ({ project, index }) => {
       whileInView={{ opacity: 1, x: 0, y: 0 }}
       viewport={{ once: true, amount: 0.15 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: (index % 3) * 0.08 }}
-      className="group border border-gray-100 bg-white overflow-hidden hover:border-blue-100 transition-all duration-300"
+      className="group border border-gray-100 bg-white overflow-hidden hover:border-blue-100 transition-all duration-300 rounded-none"
       style={{ boxShadow: '0 2px 12px rgba(2,32,170,0.04)' }}
     >
       {/* Image */}
-      <div className="relative aspect-video overflow-hidden">
+      <div className="relative aspect-video overflow-hidden rounded-none">
         <motion.img
           src={imgSrc}
           alt={project.title}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover rounded-none"
           whileHover={{ scale: 1.06 }}
           transition={{ duration: 0.6 }}
         />
         {/* Blue overlay on hover */}
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-400 flex items-end p-5"
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-400 flex items-end p-5 rounded-none"
           style={{ background: `linear-gradient(to top, ${BB}ee, transparent)` }}>
           <Link to="/contact">
-            <span className="text-xs font-extrabold uppercase tracking-widest px-4 py-2"
+            <span className="text-xs font-extrabold uppercase tracking-widest px-4 py-2 rounded-none"
               style={{ background: BG, color: BB }}>
               Enquire →
             </span>
           </Link>
         </div>
         {/* Category badge */}
-        <div className="absolute top-3 left-3 px-2.5 py-1 text-xs font-black uppercase tracking-wider"
+        <div className="absolute top-3 left-3 px-2.5 py-1 text-[9px] font-mono font-black uppercase tracking-wider rounded-none"
           style={{ background: BB, color: '#fff' }}>
-          {project.category?.slug?.replace('-', ' ') || 'Campaign'}
+          {project.category?.name} {project.category?.subName ? `// ${project.category.subName}` : ''}
         </div>
       </div>
       {/* Info */}
       <div className="p-5">
-        <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: BG === '#ffd22a' ? BB : BG }}>
+        <p className="text-xs font-mono font-bold uppercase tracking-widest mb-1" style={{ color: BG === '#ffd22a' ? BB : BG }}>
           {project.client || 'Client'}
         </p>
-        <h3 className="font-black text-gray-900 text-base mb-1 group-hover:text-blue-700 transition-colors leading-snug">{project.title}</h3>
-        {project.description && <p className="text-gray-400 text-xs leading-relaxed">{project.description}</p>}
+        <h3 className="font-black text-gray-900 text-base mb-1 group-hover:text-blue-700 transition-colors leading-snug font-display uppercase">{project.title}</h3>
+        {project.description && <p className="text-gray-400 text-xs leading-relaxed font-light">{project.description}</p>}
       </div>
     </motion.article>
   )
@@ -72,20 +101,32 @@ const ProjectCard = ({ project, index }) => {
 const Portfolio = () => {
   const [projects, setProjects] = useState([])
   const [filter, setFilter] = useState('all')
+  const [subFilter, setSubFilter] = useState('all')
   const [loading, setLoading] = useState(true)
   const [searchParams, setSearchParams] = useSearchParams()
 
-  // Set initial filter from URL parameter
+  // Set initial filters from URL parameter
   useEffect(() => {
     const categoryParam = searchParams.get('category')
+    const subParam = searchParams.get('sub')
+
     if (categoryParam && categories.some(cat => cat.slug === categoryParam)) {
       setFilter(categoryParam)
+    } else {
+      setFilter('all')
+    }
+
+    if (subParam) {
+      setSubFilter(subParam)
+    } else {
+      setSubFilter('all')
     }
   }, [searchParams])
 
   // Update URL when filter changes
   const handleFilterChange = (newFilter) => {
     setFilter(newFilter)
+    setSubFilter('all')
     if (newFilter === 'all') {
       setSearchParams({})
     } else {
@@ -93,53 +134,90 @@ const Portfolio = () => {
     }
   }
 
+  // Update URL when sub-filter changes
+  const handleSubFilterChange = (newSubFilter) => {
+    setSubFilter(newSubFilter)
+    const newParams = { category: filter }
+    if (newSubFilter !== 'all') {
+      newParams.sub = newSubFilter
+    }
+    setSearchParams(newParams)
+  }
+
   useEffect(() => {
-    // Use static data instead of API call
     setProjects(portfolioProjects)
     setLoading(false)
   }, [])
 
-  const filtered = filter === 'all' ? projects : projects.filter(p => p.category?.slug === filter)
+  const filtered = filter === 'all' 
+    ? projects 
+    : projects.filter(p => {
+        const matchesMain = p.category?.slug === filter
+        const matchesSub = subFilter === 'all' || p.category?.subSlug === subFilter
+        return matchesMain && matchesSub
+      })
 
   return (
     <div className="bg-white">
       {/* ── Hero ─────────────────────────────────────── */}
-      <section className="relative bg-white overflow-hidden" style={{ paddingTop: 'clamp(100px, 14vh, 150px)', paddingBottom: '4rem' }}>
+      <section className="relative bg-white overflow-hidden" style={{ paddingTop: 'clamp(100px, 14vh, 150px)', paddingBottom: '0.75rem' }}>
         <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ background: BG }} />
         <div className="absolute inset-0 opacity-[0.025]">
           <div className="absolute inset-0 bg-[linear-gradient(rgba(2,32,170,1)_1px,transparent_1px),linear-gradient(90deg,rgba(2,32,170,1)_1px,transparent_1px)] bg-[size:50px_50px]" />
         </div>
         <div className="container mx-auto px-6 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }}>
+          <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }} className="flex flex-col">
+            
             <div className="flex items-center gap-3 mb-4">
               <span className="h-px w-8 inline-block" style={{ background: BG }} />
-              <p className="text-xs font-bold uppercase tracking-[0.35em]" style={{ color: BB }}>Case Studies</p>
+              <p className="text-xs font-mono font-bold uppercase tracking-[0.35em]" style={{ color: BB }}>Case Studies</p>
               <span className="h-px w-8 inline-block" style={{ background: BG }} />
             </div>
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-              <div>
-                <h1 className="font-black text-gray-900 leading-tight mb-3" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}>
-                  Our <span style={{ color: BB }}>Portfolio</span>
-                </h1>
-                <p className="text-gray-500 text-base max-w-md leading-relaxed">
-                  Explore campaigns that have dominated the East African skyline and delivered real results for leading brands.
-                </p>
-              </div>
-              {/* Filter pills */}
-              <div className="flex flex-wrap gap-2">
-                {categories.map(cat => (
-                  <button key={cat.slug} onClick={() => handleFilterChange(cat.slug)}
-                    className="px-4 py-1.5 text-xs font-bold uppercase tracking-wider border-2 transition-all"
+
+            <div className="mb-6">
+              <h1 className="font-black text-gray-900 leading-tight mb-3 uppercase" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}>
+                Our <span style={{ color: BB }}>Portfolio</span>
+              </h1>
+              <p className="text-gray-500 text-sm max-w-xl leading-relaxed font-light">
+                Explore campaigns that have dominated the East African skyline and delivered real results for leading brands.
+              </p>
+            </div>
+
+            {/* Main Filter pills - single row horizontal list just above the line */}
+            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none items-center justify-start whitespace-nowrap w-full">
+              {categories.map(cat => (
+                <button key={cat.slug} onClick={() => handleFilterChange(cat.slug)}
+                  className="px-5 py-2.5 text-xs font-mono font-bold uppercase tracking-wider border transition-all rounded-none flex-shrink-0"
+                  style={{
+                    borderColor: filter === cat.slug ? BB : 'rgba(2,32,170,0.12)',
+                    background: filter === cat.slug ? BB : 'transparent',
+                    color: filter === cat.slug ? '#fff' : BB,
+                  }}>
+                  {cat.name}
+                </button>
+              ))}
+            </div>
+
+            {/* Sub-Category Filters */}
+            {filter !== 'all' && subCategories[filter] && subCategories[filter].length > 1 && (
+              <div className="w-full mt-4 border-t border-gray-100 pt-4 flex gap-2 overflow-x-auto pb-1 scrollbar-none items-center justify-start whitespace-nowrap">
+                <span className="text-[10px] font-mono font-black uppercase tracking-wider text-gray-400 mr-3 flex-shrink-0">
+                  SUB-CATEGORY //
+                </span>
+                {subCategories[filter].map(sub => (
+                  <button key={sub.slug} onClick={() => handleSubFilterChange(sub.slug)}
+                    className="px-3.5 py-1.5 text-[10px] font-mono font-bold uppercase tracking-wide border transition-all rounded-none flex-shrink-0"
                     style={{
-                      borderColor: filter === cat.slug ? BB : 'rgba(2,32,170,0.15)',
-                      background: filter === cat.slug ? BB : 'transparent',
-                      color: filter === cat.slug ? '#fff' : BB,
+                      borderColor: subFilter === sub.slug ? BG : 'rgba(2,32,170,0.1)',
+                      background: subFilter === sub.slug ? BG : 'rgba(2,32,170,0.02)',
+                      color: BB,
                     }}>
-                    {cat.name}
+                    {sub.name}
                   </button>
                 ))}
               </div>
-            </div>
+            )}
+
           </motion.div>
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-[3px]" style={{ background: BB }} />
@@ -150,7 +228,7 @@ const Portfolio = () => {
         <div className="container mx-auto px-6">
           {loading ? (
             <div className="flex items-center justify-center py-24">
-              <div className="w-10 h-10 border-4 border-gray-100 border-t-blue-600 rounded-full animate-spin" />
+              <div className="w-10 h-10 border-4 border-gray-100 border-t-blue-600 rounded-none animate-spin" />
             </div>
           ) : filtered.length > 0 ? (
             <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -165,10 +243,10 @@ const Portfolio = () => {
           ) : (
             <div className="text-center py-20">
               <div className="text-5xl mb-4" style={{ color: 'rgba(2,32,170,0.1)' }}>◈</div>
-              <h3 className="text-lg font-black text-gray-700 mb-2">No Projects Found</h3>
+              <h3 className="text-lg font-black text-gray-700 mb-2 uppercase">No Projects Found</h3>
               <p className="text-gray-400 text-sm mb-6">No projects in this category yet.</p>
               <button onClick={() => handleFilterChange('all')}
-                className="px-6 py-2.5 text-xs font-extrabold uppercase tracking-widest border-2 transition-all"
+                className="px-6 py-2.5 text-xs font-extrabold uppercase tracking-widest border transition-all rounded-none font-mono"
                 style={{ borderColor: BB, color: BB }}
                 onMouseEnter={e => { e.currentTarget.style.background = BB; e.currentTarget.style.color = '#fff' }}
                 onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = BB }}>
@@ -180,8 +258,37 @@ const Portfolio = () => {
       </section>
 
       {/* ── PDF Portfolio Section ───────────────────────────────── */}
-      <section className="py-14 bg-gray-50 border-t border-gray-100">
-        <div className="container mx-auto px-6">
+      <section 
+        className="py-24 relative overflow-hidden border-t border-b border-[#010c42]"
+        style={{
+          backgroundImage: "url('/images/city_dark_blueprint.png')",
+          backgroundAttachment: 'fixed',
+          backgroundPosition: 'center',
+          backgroundSize: 'cover',
+        }}
+      >
+        {/* Subtle dark navy grid wash overlay */}
+        <div className="absolute inset-0 bg-[#01093a]/80 backdrop-blur-[0.5px] pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(rgba(255,210,42,0.015)_1.5px,transparent_1.5px)] bg-[size:24px_24px] pointer-events-none" />
+        
+        {/* Technical drafting frame */}
+        <div className="absolute inset-6 border border-white/5 pointer-events-none hidden md:block">
+          {/* CAD corner markings */}
+          <span className="absolute top-2 left-2 text-white/20 text-[8px] font-mono select-none pointer-events-none">+</span>
+          <span className="absolute top-2 right-2 text-white/20 text-[8px] font-mono select-none pointer-events-none">+</span>
+          <span className="absolute bottom-2 left-2 text-white/20 text-[8px] font-mono select-none pointer-events-none">+</span>
+          <span className="absolute bottom-2 right-2 text-white/20 text-[8px] font-mono select-none pointer-events-none">+</span>
+          
+          {/* Faint technical metadata labels in corners */}
+          <span className="absolute top-2 left-6 text-white/15 text-[7px] font-mono select-none tracking-widest pointer-events-none">DWG. REF // RA_PORTFOLIO_PDF</span>
+          <span className="absolute bottom-2 right-6 text-white/15 text-[7px] font-mono select-none tracking-widest pointer-events-none">SCALE // 1 : 1.00</span>
+        </div>
+
+        {/* Soft Radial Center Light */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-[radial-gradient(ellipse_at_center,rgba(255,210,42,0.05)_0%,transparent_75%)] pointer-events-none filter blur-xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[200px] bg-[radial-gradient(ellipse_at_center,rgba(2,32,170,0.2)_0%,transparent_75%)] pointer-events-none filter blur-xl" />
+
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div 
             initial={{ opacity: 0, y: 20 }} 
             whileInView={{ opacity: 1, y: 0 }} 
@@ -190,15 +297,15 @@ const Portfolio = () => {
           >
             <div className="flex items-center justify-center gap-3 mb-4">
               <span className="h-px w-8 inline-block" style={{ background: BG }} />
-              <p className="text-xs font-bold uppercase tracking-[0.35em]" style={{ color: BB }}>
+              <p className="text-xs font-mono font-bold uppercase tracking-[0.35em]" style={{ color: BG }}>
                 Complete Portfolio
               </p>
               <span className="h-px w-8 inline-block" style={{ background: BG }} />
             </div>
-            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-3">
-              Download Our <span style={{ color: BB }}>Portfolio</span>
+            <h2 className="text-3xl md:text-4xl font-black text-white mb-3 uppercase">
+              Download Our <span style={{ color: BG }}>Portfolio</span>
             </h2>
-            <p className="text-gray-500 text-sm max-w-md mx-auto mb-8">
+            <p className="text-gray-300 text-sm max-w-md mx-auto mb-8 font-light leading-relaxed">
               Get the complete overview of our work, capabilities, and success stories in a comprehensive PDF portfolio.
             </p>
             
@@ -211,19 +318,19 @@ const Portfolio = () => {
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="inline-flex items-center gap-2 px-8 py-3 text-xs font-extrabold uppercase tracking-widest border-2 transition-all"
+                className="inline-flex items-center gap-2 px-8 py-3 text-xs font-extrabold uppercase tracking-widest border transition-all rounded-none font-mono"
                 style={{ 
-                  borderColor: BB, 
-                  color: BB,
+                  borderColor: '#fff', 
+                  color: '#fff',
                   background: 'transparent'
                 }}
                 onMouseEnter={e => { 
-                  e.currentTarget.style.background = BB; 
-                  e.currentTarget.style.color = '#fff'; 
+                  e.currentTarget.style.background = '#fff'; 
+                  e.currentTarget.style.color = '#01093a'; 
                 }}
                 onMouseLeave={e => { 
                   e.currentTarget.style.background = 'transparent'; 
-                  e.currentTarget.style.color = BB; 
+                  e.currentTarget.style.color = '#fff'; 
                 }}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -239,15 +346,15 @@ const Portfolio = () => {
                 download="Reign-Ads-Portfolio.pdf"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="inline-flex items-center gap-2 px-8 py-3 text-xs font-extrabold uppercase tracking-widest text-white transition-all"
-                style={{ background: BB }}
+                className="inline-flex items-center gap-2 px-8 py-3 text-xs font-extrabold uppercase tracking-widest text-[#01093a] transition-all rounded-none font-mono"
+                style={{ background: BG }}
                 onMouseEnter={e => { 
-                  e.currentTarget.style.background = BG; 
-                  e.currentTarget.style.color = BB; 
+                  e.currentTarget.style.background = '#fff'; 
+                  e.currentTarget.style.color = '#01093a'; 
                 }}
                 onMouseLeave={e => { 
-                  e.currentTarget.style.background = BB; 
-                  e.currentTarget.style.color = '#fff'; 
+                  e.currentTarget.style.background = BG; 
+                  e.currentTarget.style.color = '#01093a'; 
                 }}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -263,15 +370,15 @@ const Portfolio = () => {
               whileInView={{ opacity: 1 }} 
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
-              className="mt-8 p-4 bg-white border border-gray-200 rounded-lg max-w-md mx-auto"
+              className="mt-8 p-4 bg-[#01115e]/70 border border-blue-900/50 rounded-none max-w-md mx-auto"
             >
-              <div className="flex items-center justify-center gap-3 mb-2">
-                <svg className="w-5 h-5" style={{ color: BB }} fill="currentColor" viewBox="0 0 20 20">
+              <div className="flex items-center justify-center gap-3 mb-2 font-mono">
+                <svg className="w-5 h-5" style={{ color: BG }} fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
                 </svg>
-                <span className="text-sm font-bold text-gray-700">Portfolio PDF</span>
+                <span className="text-sm font-bold text-white">Portfolio PDF</span>
               </div>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-400 font-light">
                 Complete showcase of our advertising campaigns, client testimonials, and service capabilities.
               </p>
             </motion.div>
@@ -290,9 +397,9 @@ const Portfolio = () => {
               { n: '100%', l: 'Client Satisfaction' },
             ].map((s, i) => (
               <motion.div key={s.l} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
-                className="text-center border border-gray-200 bg-white p-6">
-                <div className="text-2xl font-black mb-1" style={{ color: BB }}>{s.n}</div>
-                <div className="text-xs text-gray-400 uppercase tracking-wider">{s.l}</div>
+                className="text-center border border-gray-200 bg-white p-6 rounded-none">
+                <div className="text-2xl font-black mb-1 font-mono" style={{ color: BB }}>{s.n}</div>
+                <div className="text-[10px] font-mono text-gray-400 uppercase tracking-wider">{s.l}</div>
               </motion.div>
             ))}
           </div>
@@ -303,10 +410,10 @@ const Portfolio = () => {
       <section className="py-14 bg-white border-t border-gray-100">
         <div className="container mx-auto px-6 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-3">Your Brand Could Be <span style={{ color: BB }}>Next</span></h2>
-            <p className="text-gray-400 text-sm max-w-sm mx-auto mb-7">Let's create a campaign that dominates the skyline and delivers measurable results for your brand.</p>
+            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-3 uppercase">Your Brand Could Be <span style={{ color: BB }}>Next</span></h2>
+            <p className="text-gray-400 text-sm max-w-sm mx-auto mb-7 font-light">Let's create a campaign that dominates the skyline and delivers measurable results for your brand.</p>
             <Link to="/contact">
-              <button className="px-10 py-3.5 text-xs font-extrabold uppercase tracking-widest text-white transition-all"
+              <button className="px-10 py-3.5 text-xs font-black uppercase tracking-widest text-white transition-all rounded-none font-mono"
                 style={{ background: BB }}
                 onMouseEnter={e => { e.currentTarget.style.background = BG; e.currentTarget.style.color = BB }}
                 onMouseLeave={e => { e.currentTarget.style.background = BB; e.currentTarget.style.color = '#fff' }}>

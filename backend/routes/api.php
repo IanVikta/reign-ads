@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 // Public Routes
 Route::post('/login', [AuthController::class , 'login']);
 
+// Inventory Routes (Public for display, Protected for management)
+Route::get('/inventory', [AdminController::class, 'getInventory']);
+
 Route::get('/services', [ServiceController::class , 'index']);
 Route::get('/services/{service:slug}', [ServiceController::class , 'show']);
 
@@ -78,5 +81,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/all', [AdminController::class, 'getAllComments']);
         Route::post('/{commentId}/approve', [AdminController::class, 'approveComment']);
         Route::delete('/{commentId}/reject', [AdminController::class, 'rejectComment']);
+    });
+
+    // Inventory Management (Protected)
+    Route::prefix('admin/inventory')->group(function () {
+        Route::post('/', [AdminController::class, 'createInventory']);
+        Route::put('/{id}', [AdminController::class, 'updateInventory']);
+        Route::delete('/{id}', [AdminController::class, 'deleteInventory']);
     });
 });

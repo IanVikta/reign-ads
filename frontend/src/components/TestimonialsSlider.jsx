@@ -88,13 +88,6 @@ const TestimonialsSlider = () => {
             transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
             className="md:col-span-7"
           >
-            {/* Opening quote mark */}
-            <div
-              className="text-9xl font-black leading-none mb-2 select-none"
-              style={{ color: `${BRAND_BLUE}10` }}
-            >
-              "
-            </div>
 
             {/* Quote + author — animate on change */}
             <div
@@ -112,7 +105,7 @@ const TestimonialsSlider = () => {
                   transition={{ duration: 0.38 }}
                   className="text-xl md:text-2xl font-semibold text-gray-800 italic leading-relaxed mb-8"
                 >
-                  "{t.quote}"
+                  {t.quote}
                 </motion.blockquote>
               </AnimatePresence>
 

@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import Navbar from './components/Navbar'
 import FooterSimple from './components/FooterSimple'
 import Loader from './components/Loader'
-import CustomCursor from './components/CustomCursor'
+// import CustomCursor from './components/CustomCursor'
 import ScrollToTop from './components/ScrollToTop'
 import ScrollToTopOnMount from './components/ScrollToTopOnMount'
 import WhatsAppChat from './components/WhatsAppChat'
@@ -38,7 +38,7 @@ function AppContent() {
 
   return (
     <>
-      <CustomCursor />
+      {/* <CustomCursor /> */}
       <ScrollToTopOnMount />
       
       {/* Always render main content */}

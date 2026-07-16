@@ -12,6 +12,7 @@ import QuoteManager from '../components/admin/QuoteManager'
 import UserManager from '../components/admin/UserManager'
 import SystemSettings from '../components/admin/SystemSettings'
 import SystemHealth from '../components/admin/SystemHealth'
+import InventoryManager from '../components/admin/InventoryManager'
 
 const BRAND_BLUE = '#0220aa'
 const BRAND_GOLD = '#ffd22a'
@@ -33,6 +34,13 @@ const AdminDashboardNew = () => {
       icon: '📊', 
       component: DashboardOverview,
       description: 'Analytics & Overview'
+    },
+    { 
+      id: 'inventory', 
+      label: 'Inventory', 
+      icon: '📍', 
+      component: InventoryManager,
+      description: 'Billboard Inventory'
     },
     { 
       id: 'content', 

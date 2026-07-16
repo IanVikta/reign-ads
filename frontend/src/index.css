@@ -55,6 +55,15 @@ h6 {
   background: #FF8C00;
 }
 
+/* Hide scrollbars completely for scrollable strips */
+.scrollbar-none::-webkit-scrollbar {
+  display: none !important;
+}
+.scrollbar-none {
+  -ms-overflow-style: none !important;  /* IE and Edge */
+  scrollbar-width: none !important;  /* Firefox */
+}
+
 .text-gold {
   color: #D4AF37;
 }

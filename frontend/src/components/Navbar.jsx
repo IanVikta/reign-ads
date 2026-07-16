@@ -24,6 +24,13 @@ const Navbar = () => {
         { name: 'Contact', path: '/contact' },
     ]
 
+    const isActive = (path) => {
+        if (path === '/') {
+            return location.pathname === '/'
+        }
+        return location.pathname.startsWith(path)
+    }
+
     return (
         <nav className={`fixed top-0 w-full transition-all duration-300 ${
             scrolled 
@@ -49,22 +56,25 @@ const Navbar = () => {
 
                 {/* Desktop Nav */}
                 <div className="hidden md:flex items-center gap-8">
-                    {navLinks.map((link) => (
-                        <Link
-                            key={link.name}
-                            to={link.path}
-                            className={`text-sm font-medium tracking-widest uppercase transition-all relative group ${
-                                location.pathname === link.path 
-                                    ? 'text-blue-700' 
-                                    : 'text-gray-700 hover:text-blue-600'
-                            }`}
-                        >
-                            {link.name}
-                            <span className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-600 via-reignGold to-blue-600 transition-all ${
-                                location.pathname === link.path ? 'w-full' : 'w-0 group-hover:w-full'
-                            }`}></span>
-                        </Link>
-                    ))}
+                    {navLinks.map((link) => {
+                        const active = isActive(link.path);
+                        return (
+                            <Link
+                                key={link.name}
+                                to={link.path}
+                                className={`text-sm font-medium tracking-widest uppercase transition-all relative group ${
+                                    active 
+                                        ? 'text-blue-700' 
+                                        : 'text-gray-700 hover:text-blue-600'
+                                }`}
+                            >
+                                {link.name}
+                                <span className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-600 via-reignGold to-blue-600 transition-all ${
+                                    active ? 'w-full' : 'w-0 group-hover:w-full'
+                                }`}></span>
+                            </Link>
+                        );
+                    })}
                     
                     {/* CTA Button */}
                     <Link
@@ -145,26 +155,29 @@ const Navbar = () => {
 
                             {/* Navigation Links */}
                             <div className="flex flex-col px-6 gap-1">
-                                {navLinks.map((link, index) => (
-                                    <motion.div
-                                        key={link.name}
-                                        initial={{ opacity: 0, x: 50 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: index * 0.1, type: 'spring' }}
-                                    >
-                                        <Link
-                                            to={link.path}
-                                            onClick={() => setMobileMenuOpen(false)}
-                                            className={`block py-3 px-6 text-sm font-medium tracking-wider uppercase transition-all ${
-                                                location.pathname === link.path 
-                                                    ? 'text-blue-700 bg-gradient-to-r from-blue-50 to-transparent border-l-2 border-blue-600' 
-                                                    : 'text-gray-700 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent border-l-2 border-transparent hover:border-blue-400'
-                                            }`}
+                                {navLinks.map((link, index) => {
+                                    const active = isActive(link.path);
+                                    return (
+                                        <motion.div
+                                            key={link.name}
+                                            initial={{ opacity: 0, x: 50 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ delay: index * 0.1, type: 'spring' }}
                                         >
-                                            {link.name}
-                                        </Link>
-                                    </motion.div>
-                                ))}
+                                            <Link
+                                                to={link.path}
+                                                onClick={() => setMobileMenuOpen(false)}
+                                                className={`block py-3 px-6 text-sm font-medium tracking-wider uppercase transition-all ${
+                                                    active 
+                                                        ? 'text-blue-700 bg-gradient-to-r from-blue-50 to-transparent border-l-2 border-blue-600' 
+                                                        : 'text-gray-700 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent border-l-2 border-transparent hover:border-blue-400'
+                                                }`}
+                                            >
+                                                {link.name}
+                                            </Link>
+                                        </motion.div>
+                                    );
+                                })}
                             </div>
                             
                             {/* CTA Button */}

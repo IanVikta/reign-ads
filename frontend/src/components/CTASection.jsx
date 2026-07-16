@@ -111,7 +111,7 @@ const CTASection = () => {
               className="absolute inset-0"
             >
               <img
-                src="https://images.unsplash.com/photo-1533106418989-88406c7cc8ca?w=1200&q=85"
+                src="/images/billboards/spotlight.jpeg"
                 alt="Brand in the spotlight"
                 className="w-full h-full object-cover"
                 style={{ filter: 'brightness(0.75)' }}
