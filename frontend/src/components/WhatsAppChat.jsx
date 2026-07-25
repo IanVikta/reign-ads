@@ -50,7 +50,7 @@ const WhatsAppChat = () => {
                         }
                     }}
                     onClick={openWhatsApp}
-                    className="fixed bottom-28 right-4 md:right-8 z-50 group"
+                    className="fixed bottom-6 right-4 md:right-8 z-50 group"
                     aria-label="Chat on WhatsApp"
                 >
                     {/* Outer ring with rotation */}

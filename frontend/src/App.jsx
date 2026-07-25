@@ -4,8 +4,6 @@ import { AnimatePresence, motion } from 'framer-motion'
 import Navbar from './components/Navbar'
 import FooterSimple from './components/FooterSimple'
 import Loader from './components/Loader'
-// import CustomCursor from './components/CustomCursor'
-import ScrollToTop from './components/ScrollToTop'
 import ScrollToTopOnMount from './components/ScrollToTopOnMount'
 import WhatsAppChat from './components/WhatsAppChat'
 
@@ -67,11 +65,9 @@ function AppContent() {
           </Routes>
         </main>
         
-        {/* Conditionally render Footer and other components - hide on admin routes */}
         {!isAdminRoute && (
           <>
             <FooterSimple />
-            <ScrollToTop />
             <WhatsAppChat />
           </>
         )}

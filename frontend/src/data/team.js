@@ -3,7 +3,7 @@ export const teamMembers = [
     id: 'ibrahim-kavuma',
     name: 'Ibrahim Ryan Kavuma',
     position: 'Team Leader & Head of Production',
-    image: 'https://ui-avatars.com/api/?name=Ibrahim+Kavuma&size=400&background=0220aa&color=fff&bold=true',
+    image: '/images/about/hajji.png',
     bio: 'Leading our production team with excellence and innovation'
   },
   {
