@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 
 const SectionEyebrow = ({ label }) => (
@@ -83,149 +83,178 @@ const serviceIcons = {
 const BB = '#0220aa'
 const BG = '#ffd22a'
 
-const ServiceCard = ({ service, index }) => {
+const Building = ({ w, h, d, x, z, isCentral = false }) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.6, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-      className="flex flex-col bg-white border border-gray-150 hover:border-[#0220aa]/20 rounded-none transition-all duration-500 relative group overflow-hidden h-full"
-      style={{ boxShadow: '0 8px 30px rgba(2,32,170,0.015)' }}
+    <div 
+      className="absolute"
+      style={{
+        width: `${w}px`,
+        height: `${h}px`,
+        left: '50%',
+        bottom: '0px',
+        transformStyle: 'preserve-3d',
+        transform: `translateX(-50%) translateX(${x}px) translateZ(${z}px)`,
+      }}
     >
-      {/* CAD corner coordinate markings */}
-      <span className="absolute top-3 left-3 text-gray-300/40 text-[9px] font-mono select-none group-hover:text-[#0220aa] group-hover:scale-110 transition-all duration-300 pointer-events-none">+</span>
-      <span className="absolute top-3 right-3 text-gray-300/40 text-[9px] font-mono select-none group-hover:text-[#0220aa] group-hover:scale-110 transition-all duration-300 pointer-events-none">+</span>
-      <span className="absolute bottom-3 left-3 text-gray-300/40 text-[9px] font-mono select-none group-hover:text-[#0220aa] group-hover:scale-110 transition-all duration-300 pointer-events-none">+</span>
-      <span className="absolute bottom-3 right-3 text-gray-300/40 text-[9px] font-mono select-none group-hover:text-[#0220aa] group-hover:scale-110 transition-all duration-300 pointer-events-none">+</span>
-
-      {/* Top Image Container */}
-      <div className="relative aspect-[16/10] overflow-hidden bg-gray-100 rounded-none">
-        <img
-          src={service.image}
-          alt={service.name}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 rounded-none"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/10 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
+      {/* Front Face */}
+      <div 
+        className="absolute inset-0 bg-slate-900 border border-slate-800/80 overflow-hidden" 
+        style={{ transform: `translateZ(${d/2}px)`, backfaceVisibility: 'hidden' }}
+      >
+        <div className={`w-full h-full bg-[linear-gradient(to_bottom,transparent_50%,rgba(56,189,248,${isCentral ? '0.25' : '0.15'})_50%)] bg-[size:100%_8px] ${isCentral ? 'opacity-90' : 'opacity-70'}`} />
         
-        {/* Floating Stat Badge */}
-        {service.stat && (
-          <div 
-            className="absolute top-4 left-4 px-3 py-1.5 text-[9px] font-mono font-black uppercase tracking-widest border border-white/20 backdrop-blur-md shadow-sm rounded-none"
-            style={{ background: 'rgba(255, 210, 42, 0.95)', color: '#0220aa' }}
-          >
-            {service.stat}
+        {/* Giant Vertical Screen for Central Tower */}
+        {isCentral && (
+          <div className="absolute top-4 left-1.5 right-1.5 h-[50px] bg-blue-950 border border-blue-500/50 flex flex-col items-center justify-center overflow-hidden shadow-[0_0_10px_rgba(56,189,248,0.3)]">
+            <div className="text-[7px] font-mono font-black text-blue-400 tracking-wider animate-pulse">REIGN ADS</div>
+            <div className="text-[5px] font-mono text-[#ffd22a] tracking-widest mt-0.5">OUTDOOR_NET</div>
+            {/* Horizontal scanline */}
+            <div className="absolute top-0 left-0 w-full h-[1px] bg-cyan-400 animate-scanline pointer-events-none" />
           </div>
         )}
-
-        {/* Floating Index Number */}
-        <div className="absolute bottom-4 right-4 text-white/40 font-black text-2xl font-mono select-none">
-          {String(index + 1).padStart(2, '0')}
-        </div>
       </div>
 
-      {/* Content Container */}
-      <div className="p-6 flex-1 flex flex-col justify-between relative bg-white">
-        <div>
-          {/* Header row with Icon */}
-          <div className="flex items-center gap-4 mb-4">
-            <div 
-              className="w-10 h-10 flex items-center justify-center rounded-none transition-colors duration-300 group-hover:bg-[#0220aa] group-hover:text-white [&>svg]:w-5 [&>svg]:h-5"
-              style={{ background: 'rgba(2, 32, 170, 0.05)', color: '#0220aa' }}
-            >
-              {serviceIcons[service.id] || <span>✦</span>}
-            </div>
-            <h3 className="text-lg font-black text-gray-900 tracking-wide font-display group-hover:text-[#0220aa] transition-colors">
-              {service.name}
-            </h3>
-          </div>
-
-          <p className="text-gray-400 text-xs md:text-sm leading-relaxed mb-6 font-light h-14 overflow-hidden line-clamp-3">
-            {service.description}
-          </p>
-
-          {/* Key Solutions (Mini Tags) */}
-          <div className="mb-6">
-            <div className="flex flex-wrap gap-1.5">
-              {service.features.slice(0, 3).map(f => (
-                <span 
-                  key={f} 
-                  className="text-[9px] text-gray-500 bg-gray-50 border border-gray-100 px-2.5 py-1.5 rounded-none font-mono uppercase font-medium"
-                >
-                  {f}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* CTA Enquire Link */}
-        <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
-          <Link to="/contact" className="text-[10px] font-black uppercase tracking-widest text-[#0220aa] flex items-center gap-1.5 group/btn transition-colors hover:text-[#ffd22a]">
-            <span>Enquire Now</span>
-            <span className="transition-transform group-hover/btn:translate-x-1 duration-300">→</span>
-          </Link>
-        </div>
+      {/* Back Face */}
+      <div 
+        className="absolute inset-0 bg-slate-950 border border-slate-850/80 overflow-hidden" 
+        style={{ transform: `rotateY(180deg) translateZ(${d/2}px)`, backfaceVisibility: 'hidden' }}
+      >
+        <div className="w-full h-full bg-[linear-gradient(to_bottom,transparent_50%,rgba(56,189,248,0.1)_50%)] bg-[size:100%_8px] opacity-50" />
       </div>
 
-      {/* Dynamic bottom active bar */}
-      <div className="absolute bottom-0 left-0 h-1 bg-transparent group-hover:bg-[#ffd22a] w-full transition-all duration-500 rounded-none" />
-    </motion.div>
+      {/* Left Face */}
+      <div 
+        className="absolute top-0 bottom-0 bg-slate-950 border-l border-r border-slate-900/80 overflow-hidden" 
+        style={{ width: `${d}px`, left: `-${d/2}px`, transform: 'rotateY(-90deg)', backfaceVisibility: 'hidden' }}
+      >
+        <div className="w-full h-full bg-[linear-gradient(to_bottom,transparent_50%,rgba(56,189,248,0.12)_50%)] bg-[size:100%_8px] opacity-60" />
+      </div>
+
+      {/* Right Face */}
+      <div 
+        className="absolute top-0 bottom-0 bg-slate-900 border-l border-r border-slate-800/80 overflow-hidden" 
+        style={{ width: `${d}px`, right: `-${d/2}px`, transform: 'rotateY(90deg)', backfaceVisibility: 'hidden' }}
+      >
+        <div className="w-full h-full bg-[linear-gradient(to_bottom,transparent_50%,rgba(56,189,248,0.15)_50%)] bg-[size:100%_8px] opacity-70" />
+      </div>
+
+      {/* Top Face */}
+      <div 
+        className="absolute left-0 right-0 bg-slate-800 border border-slate-700" 
+        style={{ height: `${d}px`, top: `-${d/2}px`, transform: 'rotateX(90deg)', backfaceVisibility: 'hidden' }}
+      >
+        <div className="w-full h-full flex items-center justify-center">
+          <div className={`w-1.5 h-1.5 rounded-full ${isCentral ? 'bg-blue-400' : 'bg-[#ffd22a]'} animate-ping`} />
+        </div>
+      </div>
+    </div>
   )
 }
 
 const Services = () => {
   const [services] = useState(serviceData)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
+  const [tilt, setTilt] = useState({ x: 0, y: 0 })
+  const [hovered, setHovered] = useState(false)
+
+  const handleMouseMove = (e) => {
+    setHovered(true)
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect()
+    const x = ((e.clientX - left) / width - 0.5) * 35 // 35deg max horizontal tilt range
+    const y = ((e.clientY - top) / height - 0.5) * -20 // 20deg max vertical tilt range
+    setTilt({ x, y })
+  }
+
+  const handleMouseLeave = () => {
+    setHovered(false)
+    setTilt({ x: 0, y: 0 })
+  }
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768)
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveIndex(prev => (prev + 1) % services.length)
+    }, 6000) // auto transition every 6 seconds
+    return () => clearInterval(timer)
+  }, [activeIndex, services.length])
 
   return (
     <div className="bg-white">
-      {/* ── Services Hero (Agency Blueprint Redesign) ─────── */}
-      <section className="relative bg-gray-50 overflow-hidden py-24 border-b border-gray-150" style={{ paddingTop: 'clamp(120px, 16vh, 180px)' }}>
-        {/* Decorative blueprint grids in background */}
-        <div className="absolute inset-0 bg-[radial-gradient(rgba(2,32,170,0.015)_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
+      {/* ── Services Hero (Immersive Creative Workspace Redesign) ─────── */}
+      <section 
+        className="relative bg-slate-950 text-white overflow-hidden py-28 border-b border-slate-800" 
+        style={{ paddingTop: 'clamp(140px, 18vh, 200px)' }}
+      >
+        {/* Futuristic Cyber Grid & Radial Overlay */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#0f172a_1px,transparent_1px),linear-gradient(to_bottom,#0f172a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-60 pointer-events-none" />
+        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 left-10 w-[300px] h-[300px] bg-blue-600/10 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(2,32,170,0.12)_0%,transparent_60%)] pointer-events-none" />
 
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="grid lg:grid-cols-12 gap-12 items-center">
+        <div className="max-w-6xl mx-auto px-8 relative z-10">
+          <div className="grid lg:grid-cols-12 gap-16 items-center">
             
             {/* Left Column: Heading and Description */}
             <motion.div 
-              initial={{ opacity: 0, y: 35 }} 
+              initial={{ opacity: 0, y: 40 }} 
               animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-              className="lg:col-span-7 text-left space-y-6"
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="lg:col-span-7 text-left space-y-8"
             >
-              <div className="inline-flex items-center gap-2">
-                <span className="h-[2px] w-5 inline-block" style={{ background: BG }} />
-                <p className="text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: BB }}>What We Offer</p>
-              </div>
 
-              <h1 className="font-black text-gray-900 leading-tight tracking-tight uppercase" style={{ fontSize: 'clamp(2.2rem, 5.5vw, 4rem)' }}>
-                Creative Advertising <br />
-                <span style={{ color: BB }}>Solutions</span>
+              {/* Mega Title - Custom Color Accent */}
+              <h1 className="font-black leading-[1.08] tracking-tight uppercase font-display text-white" style={{ fontSize: 'clamp(2.6rem, 5.8vw, 4.8rem)' }}>
+                <span className="text-[#ffd22a]">Creative</span> Advertising <br />
+                <span>
+                  Solutions
+                </span>
               </h1>
               
-              <p className="text-gray-400 text-sm md:text-base max-w-xl leading-relaxed font-light">
+              <p className="text-slate-300 text-sm md:text-base max-w-xl leading-relaxed font-light">
                 From high-impact spectacular billboards to digital LED networks, we deliver end-to-end outdoor advertising campaigns that command visibility across major East African corridors.
               </p>
               
+              {/* Tech Metrics Grid */}
+              <div className="grid grid-cols-3 gap-4 max-w-lg border-t border-b border-slate-900 py-6">
+                <div>
+                  <p className="text-white text-2xl md:text-3xl font-black tracking-tight font-display">70+</p>
+                  <p className="text-slate-500 font-mono text-[9px] uppercase tracking-wider mt-1">Prime Locations</p>
+                </div>
+                <div>
+                  <p className="text-white text-2xl md:text-3xl font-black tracking-tight font-display">10M+</p>
+                  <p className="text-slate-500 font-mono text-[9px] uppercase tracking-wider mt-1">Daily Views</p>
+                </div>
+                <div>
+                  <p className="text-white text-2xl md:text-3xl font-black tracking-tight font-display">9+</p>
+                  <p className="text-slate-500 font-mono text-[9px] uppercase tracking-wider mt-1">Years of Mastery</p>
+                </div>
+              </div>
+
+              {/* Premium Button Actions */}
               <div className="flex flex-wrap gap-4 pt-2">
                 <Link to="/contact">
                   <motion.button 
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="px-8 py-4 text-xs font-black uppercase tracking-widest text-white transition-all duration-300 rounded-none"
-                    style={{ background: BB }}
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="px-8 py-4.5 text-xs font-black uppercase tracking-widest text-white transition-all duration-300 rounded-none bg-[#0220aa] border border-transparent cursor-pointer"
                     onMouseEnter={e => { e.currentTarget.style.background = BG; e.currentTarget.style.color = BB }}
                     onMouseLeave={e => { e.currentTarget.style.background = BB; e.currentTarget.style.color = '#fff' }}
                   >
                     Request Consultation →
                   </motion.button>
                 </Link>
-                <a href="#services-list">
+                <a href="#services-interactive-section">
                   <motion.button 
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="px-8 py-4 text-xs font-black uppercase tracking-widest text-gray-600 border border-gray-200 hover:border-gray-900 bg-white transition-all duration-300 rounded-none"
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="px-8 py-4.5 text-xs font-black uppercase tracking-widest text-slate-300 border border-slate-800 bg-slate-900/30 transition-all duration-300 rounded-none cursor-pointer"
                   >
                     Explore Services
                   </motion.button>
@@ -233,191 +262,412 @@ const Services = () => {
               </div>
             </motion.div>
 
-            {/* Right Column: Interactive Billboard Wireframe */}
+            {/* Right Column: Interactive 3D Cyber City Workspace */}
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-              className="lg:col-span-5 bg-white border border-gray-150 p-6 rounded-none shadow-sm relative overflow-hidden"
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="lg:col-span-5"
             >
-              <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-gray-50 border border-gray-100 rounded-none px-3 py-1">
-                <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
-                <span className="text-[9px] font-mono font-bold text-gray-500 uppercase tracking-wider">Active Grid</span>
-              </div>
-              
-              <svg width="100%" height="280" viewBox="0 0 400 300" fill="none" stroke="currentColor" className="text-gray-300">
-                {/* Blueprint mesh grid */}
-                <path d="M 0 40 L 400 40 M 0 80 L 400 80 M 0 120 L 400 120 M 0 160 L 400 160 M 0 200 L 400 200 M 0 240 L 400 240 M 0 280 L 400 280" strokeWidth="0.5" strokeDasharray="3 3" opacity="0.3" />
-                <path d="M 40 0 L 40 300 M 80 0 L 80 300 M 120 0 L 120 300 M 160 0 L 160 300 M 200 0 L 200 300 M 240 0 L 240 300 M 280 0 L 280 300 M 320 0 L 320 300 M 360 0 L 360 300" strokeWidth="0.5" strokeDasharray="3 3" opacity="0.3" />
+              {/* Mouse reactive container */}
+              <div 
+                className="relative bg-slate-900/60 border border-slate-800 p-6 shadow-2xl rounded-none group cursor-pointer overflow-hidden backdrop-blur-sm h-[380px] flex flex-col justify-between"
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+              >
+                {/* Neon blueprint corner markings */}
+                <div className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-blue-500/40 group-hover:border-blue-400 transition-colors" />
+                <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-blue-500/40 group-hover:border-blue-400 transition-colors" />
+                <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-blue-500/40 group-hover:border-blue-400 transition-colors" />
+                <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-blue-500/40 group-hover:border-blue-400 transition-colors" />
                 
-                {/* Billboard Structure */}
-                <g stroke={BB} strokeWidth="1.5">
-                  <rect x="80" y="30" width="240" height="120" fill="white" />
-                  <rect x="86" y="36" width="228" height="108" strokeDasharray="3 3" />
-                  <line x1="200" y1="150" x2="200" y2="260" strokeWidth="3" />
-                  <line x1="140" y1="260" x2="260" y2="260" strokeWidth="2.5" />
-                  <line x1="200" y1="200" x2="160" y2="260" />
-                  <line x1="200" y1="200" x2="240" y2="260" />
-                  
-                  {/* Spotlights */}
-                  <circle cx="130" cy="20" r="3.5" fill={BG} />
-                  <line x1="130" y1="20" x2="140" y2="30" />
-                  <circle cx="200" cy="20" r="3.5" fill={BG} />
-                  <line x1="200" y1="20" x2="200" y2="30" />
-                  <circle cx="270" cy="20" r="3.5" fill={BG} />
-                  <line x1="270" y1="20" x2="260" y2="30" />
-                </g>
+                {/* Active HUD indicator */}
+                <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-slate-950 border border-slate-800 px-3 py-1 font-mono text-[9px] font-bold text-slate-400 uppercase tracking-widest z-20">
+                  <span className="h-1.5 w-1.5 rounded-full bg-blue-500 animate-pulse" />
+                  <span>Coverage Grid V2.0</span>
+                </div>
 
-                {/* Annotation Labels */}
-                <g fontFamily="monospace" fontSize="8" fontWeight="bold">
-                  {/* Left Callout */}
-                  <path d="M 80 50 L 30 50" stroke={BB} strokeWidth="1" strokeDasharray="2 2" />
-                  <circle cx="80" cy="50" r="2" fill={BB} />
-                  <text x="5" y="44" fill={BB}>70+ LOCATIONS</text>
-                  <text x="5" y="55" fill="gray" fontWeight="normal">UGANDA COVERAGE</text>
+                {/* Digital Spec overlay */}
+                <div className="absolute bottom-4 left-6 font-mono text-[9px] text-slate-500 space-y-0.5 pointer-events-none z-20">
+                  <p>LAT: 0.3176° N (KAMPALA)</p>
+                  <p>LON: 32.5811° E</p>
+                  <p>SYS_STATUS: CALIBRATED</p>
+                </div>
 
-                  {/* Right Callout */}
-                  <path d="M 320 90 L 370 90" stroke={BB} strokeWidth="1" strokeDasharray="2 2" />
-                  <circle cx="320" cy="90" r="2" fill={BB} />
-                  <text x="330" y="80" fill={BB}>10M+ VIEWS</text>
-                  <text x="330" y="91" fill="gray" fontWeight="normal">DAILY IMPRESSIONS</text>
+                {/* 3D City Viewport */}
+                <div 
+                  className="w-full relative h-[260px] flex items-center justify-center pointer-events-none mt-4 overflow-visible"
+                  style={{ perspective: '1000px', transformStyle: 'preserve-3d' }}
+                >
+                  {/* Ground plate (grid/roads) */}
+                  <div 
+                    className="absolute bg-slate-950 border border-slate-900" 
+                    style={{ 
+                      width: '280px', 
+                      height: '280px', 
+                      transform: 'rotateX(90deg) translateZ(-80px)', 
+                      opacity: 0.8,
+                      backgroundImage: 'radial-gradient(rgba(56,189,248,0.2) 1px, transparent 1px)',
+                      backgroundSize: '16px 16px',
+                      transformStyle: 'preserve-3d'
+                    }}
+                  >
+                    {/* Intersecting neon roads */}
+                    <svg className="absolute inset-0 w-full h-full opacity-60" viewBox="0 0 280 280" fill="none">
+                      <path d="M 0 140 L 280 140" stroke="#0220aa" strokeWidth="2" strokeDasharray="6 6" className="animate-highway" />
+                      <path d="M 140 0 L 140 280" stroke="#ffd22a" strokeWidth="2" strokeDasharray="6 6" className="animate-highway-reverse" />
+                      <path d="M 30 30 L 250 250" stroke="#0220aa" strokeWidth="1" strokeDasharray="4 4" />
+                    </svg>
+                  </div>
 
-                  {/* Center Support Callout */}
-                  <path d="M 200 230 L 255 230" stroke={BB} strokeWidth="1" strokeDasharray="2 2" />
-                  <circle cx="200" cy="230" r="2" fill={BB} />
-                  <text x="262" y="228" fill={BB}>FABRICATION</text>
-                  <text x="262" y="238" fill="gray" fontWeight="normal">ENGINEERED STEEL</text>
-                </g>
-              </svg>
+                  {/* City Rotation Container */}
+                  <div
+                    className={`relative w-[280px] h-[160px] ${hovered ? '' : 'animate-city3D'}`}
+                    style={hovered ? {
+                      transform: `rotateX(${62 + tilt.y}deg) rotateZ(${-25 + tilt.x}deg)`,
+                      transformStyle: 'preserve-3d',
+                      transition: 'transform 0.15s ease-out',
+                    } : {
+                      transformStyle: 'preserve-3d',
+                    }}
+                  >
+                    {/* Buildings Cluster */}
+                    {/* Central Monument */}
+                    <Building w={40} h={150} d={40} x={0} z={0} isCentral={true} />
+
+                    {/* Surrounding Skyline */}
+                    <Building w={24} h={110} d={24} x={-55} z={-45} />
+                    <Building w={26} h={130} d={26} x={55} z={-35} />
+                    <Building w={22} h={80} d={22} x={-40} z={45} />
+                    <Building w={24} h={95} d={24} x={40} z={35} />
+                    <Building w={28} h={100} d={28} x={0} z={-65} />
+
+                    {/* Holographic Concentric Rings (orbiting central tower) */}
+                    <div 
+                      className="absolute left-1/2 -translate-x-1/2 pointer-events-none"
+                      style={{
+                        top: '10px',
+                        width: '120px',
+                        height: '120px',
+                        transformStyle: 'preserve-3d',
+                        transform: 'translateZ(60px) rotateX(75deg)',
+                      }}
+                    >
+                      <svg className="w-full h-full animate-spin-slow text-[#ffd22a]/40" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1">
+                        <circle cx="50" cy="50" r="45" strokeDasharray="5 5" />
+                        <circle cx="50" cy="50" r="30" strokeDasharray="3 3" className="text-blue-400/40" />
+                      </svg>
+                    </div>
+
+                  </div>
+                </div>
+
+                {/* Ground/Chamber Details (Bottom of workspace) */}
+                <div className="w-[85%] mx-auto flex items-center justify-between border-t border-slate-800/80 pt-3 relative z-20">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-blue-500 animate-ping" />
+                    <p className="font-mono text-[9px] uppercase text-slate-400 font-bold tracking-wider">
+                      Uganda Network coverage
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-1 font-mono text-[8px] text-slate-500">
+                    <span>SYS_LOAD: CALIBRATED</span>
+                  </div>
+                </div>
+
+              </div>
             </motion.div>
 
           </div>
         </div>
+
+        {/* CSS Keyframes for Scanline & 3D sway */}
+        <style>{`
+          @keyframes scanline {
+            0% { top: 0%; }
+            50% { top: 100%; }
+            100% { top: 0%; }
+          }
+          .animate-scanline {
+            animation: scanline 6s linear infinite;
+          }
+          .bg-noise {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+          }
+          .animate-billboard3D {
+            animation: billboard3D 12s ease-in-out infinite;
+          }
+        `}</style>
       </section>
 
-      <section className="py-4 bg-white/95 border-b border-gray-150 sticky top-[70px] z-30 backdrop-blur-xl">
-        <div className="container mx-auto px-6">
-          <div className="flex gap-3 overflow-x-auto pb-1 scrollbar-none items-center justify-start md:justify-center">
-            <span className="text-[10px] font-mono font-black uppercase tracking-wider text-gray-400 mr-2 flex-shrink-0 hidden md:inline-block">
-              Jump To:
-            </span>
-            {services.map(s => (
-              <a 
-                key={s.id} 
-                href={`#service-${s.id}`}
-                className="flex-shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-none text-xs font-mono font-bold uppercase tracking-wider border transition-all duration-300 shadow-sm group hover:-translate-y-0.5"
-                style={{ borderColor: 'rgba(2,32,170,0.12)', color: '#0220aa', background: 'rgba(255, 255, 255, 0.6)' }}
-                onMouseEnter={e => { 
-                  e.currentTarget.style.background = '#0220aa'; 
-                  e.currentTarget.style.color = '#ffffff'; 
-                  e.currentTarget.style.borderColor = '#0220aa'; 
-                }}
-                onMouseLeave={e => { 
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.6)'; 
-                  e.currentTarget.style.color = '#0220aa'; 
-                  e.currentTarget.style.borderColor = 'rgba(2,32,170,0.12)'; 
-                }}
-              >
-                <span className="text-inherit flex-shrink-0 flex items-center justify-center [&>svg]:w-4 [&>svg]:h-4">
-                  {serviceIcons[s.id]}
-                </span>
-                <span>{s.name}</span>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* ── Services Cards List ───────────────────────────── */}
-      <section id="services-list" className="py-20 bg-white">
+      {/* ── Services Cards List (Interactive 3D Stack) ──────── */}
+      <section id="services-interactive-section" className="py-24 bg-white scroll-mt-24">
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, i) => (
-              <div id={`service-${service.id}`} key={service.id} className="scroll-mt-36">
-                <ServiceCard service={service} index={i} />
+          {/* Brand Blue Dome Section */}
+          <div className="relative bg-gradient-to-br from-[#0220aa] to-[#010b4f] rounded-t-[60px] md:rounded-t-[100px] py-16 px-6 md:px-12 overflow-hidden shadow-2xl border-t border-l border-r border-[#ffd22a]/30 w-full max-w-[95%] xl:max-w-7xl mx-auto">
+            {/* Tech blueprints grids/elements in background */}
+            <div className="absolute inset-0 bg-[radial-gradient(rgba(255,210,42,0.05)_1px,transparent_1px)] bg-[size:28px_28px] pointer-events-none" />
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,210,42,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,210,42,0.02)_1px,transparent_1px)] bg-[size:56px_56px] pointer-events-none" />
+            <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full border border-white/5 pointer-events-none animate-spin-slow" />
+            <div className="absolute -bottom-24 -right-24 w-96 h-96 rounded-full border border-white/5 pointer-events-none animate-spin-slow" />
+
+            <div className="relative z-10 w-full flex flex-col items-center">
+              {/* Heading */}
+              <h2 className="text-3xl md:text-5xl font-black uppercase tracking-[0.2em] text-white text-center font-display mb-10">
+                Services
+              </h2>
+
+              {/* 3D Stack Frame */}
+              <div className="relative w-full h-[220px] md:h-[360px] flex items-center justify-center select-none mb-6 overflow-hidden">
+                {services.map((service, idx) => {
+                  // Calculate dynamic diff for circular positioning
+                  let diff = idx - activeIndex;
+                  const length = services.length;
+                  if (diff < -length / 2) diff += length;
+                  if (diff > length / 2) diff -= length;
+
+                  const isActive = diff === 0;
+                  const isPrev = diff === -1;
+                  const isNext = diff === 1;
+
+                  // Target animation styles
+                  let x = 0;
+                  if (isPrev) x = isMobile ? -90 : -200;
+                  if (isNext) x = isMobile ? 90 : 200;
+
+                  let rotate = diff * (isMobile ? 6 : 8);
+                  let scale = isActive ? 1 : 0.85;
+                  let opacity = isActive ? 1 : (Math.abs(diff) === 1 ? 0.55 : 0);
+                  let zIndex = isActive ? 20 : (Math.abs(diff) === 1 ? 10 : 0);
+
+                  return (
+                    <motion.div
+                      key={service.id}
+                      onClick={() => {
+                        if (!isActive) setActiveIndex(idx);
+                      }}
+                      className={`absolute border transition-colors duration-300 bg-slate-900 overflow-hidden rounded-none shadow-xl ${
+                        isActive 
+                          ? 'border-[#ffd22a]/55 cursor-default' 
+                          : 'border-white/10 cursor-pointer hover:border-white/20'
+                      }`}
+                      animate={{
+                        x,
+                        rotate,
+                        scale,
+                        scaleX: isActive ? 1 : 0.85,
+                        scaleY: isActive ? 1 : 0.85,
+                        opacity,
+                        zIndex,
+                        width: isMobile 
+                          ? (isActive ? '240px' : '210px') 
+                          : (isActive ? '480px' : '440px'),
+                        height: isMobile 
+                          ? (isActive ? '160px' : '140px') 
+                          : (isActive ? '290px' : '260px'),
+                      }}
+                      transition={{
+                        x: { type: 'spring', stiffness: 90, damping: 11, mass: 0.7 },
+                        rotate: { type: 'spring', stiffness: 100, damping: 15 },
+                        scale: { type: 'spring', stiffness: 120, damping: 12 },
+                        scaleX: { type: 'spring', stiffness: 140, damping: 8 },
+                        scaleY: { type: 'spring', stiffness: 140, damping: 8 },
+                        width: { type: 'spring', stiffness: 90, damping: 11 },
+                        height: { type: 'spring', stiffness: 90, damping: 11 },
+                        opacity: { duration: 0.35 }
+                      }}
+                    >
+                      <img 
+                        src={service.image} 
+                        alt={service.name} 
+                        className={`w-full h-full object-cover transition-all duration-500 rounded-none pointer-events-none ${
+                          isActive ? 'grayscale-0 opacity-100' : 'grayscale opacity-60'
+                        }`}
+                      />
+                      {!isActive && <div className="absolute inset-0 bg-black/40 hover:bg-black/25 transition-colors duration-300 pointer-events-none" />}
+
+                      {/* Monospace code badge in top right */}
+                      {isActive && (
+                        <div className="absolute top-4 right-4 text-white/50 text-[9px] font-mono">
+                          {String(idx + 1).padStart(2, '0')} / {String(services.length).padStart(2, '0')}
+                        </div>
+                      )}
+                    </motion.div>
+                  );
+                })}
               </div>
-            ))}
+
+              {/* Active Service Pill */}
+              <div className="mb-6">
+                <div className="bg-white text-[#0220aa] px-6 py-2.5 rounded-full font-mono text-xs md:text-sm font-black uppercase tracking-wider shadow-lg flex items-center gap-3">
+                  <span className="w-5 h-5 flex items-center justify-center bg-[#0220aa] text-white rounded-full text-[10px]">
+                    {String(activeIndex + 1).padStart(2, '0')}
+                  </span>
+                  <span>{services[activeIndex].name}</span>
+                </div>
+              </div>
+
+              {/* Animate Service Details */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={services[activeIndex].id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.4 }}
+                  className="w-full max-w-2xl text-center space-y-6"
+                >
+
+                  <p className="text-blue-100 text-sm md:text-base leading-relaxed font-light px-4">
+                    {services[activeIndex].description}
+                  </p>
+
+                  {/* Key Solutions (Mini Tags) */}
+                  <div className="flex flex-wrap justify-center gap-2 pt-2">
+                    {services[activeIndex].features.map(f => (
+                      <span 
+                        key={f} 
+                        className="text-[9px] md:text-[10px] text-white bg-white/10 border border-white/20 px-3 py-1.5 rounded-none font-mono uppercase font-medium"
+                      >
+                        {f}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* CTA Enquire Link */}
+                  <div className="pt-6 flex justify-center">
+                    <Link to="/contact" className="text-xs font-black uppercase tracking-widest text-[#ffd22a] flex items-center gap-2 group transition-colors hover:text-white">
+                      <span>Enquire Now</span>
+                      <span className="transition-transform group-hover:translate-x-1.5 duration-300">→</span>
+                    </Link>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </div>
         </div>
       </section>
 
       {/* ── Advantages Section ────────────────────────────── */}
-      <section className="py-20 bg-gray-50 relative overflow-hidden border-t border-b border-gray-150">
-        <div className="absolute inset-0 bg-[radial-gradient(rgba(2,32,170,0.012)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
+      <section className="py-24 bg-white text-gray-900 relative overflow-hidden border-t border-b border-gray-150">
+        {/* Cyber grid backdrop */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#f1f5f9_1px,transparent_1px),linear-gradient(to_bottom,#f1f5f9_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-70 pointer-events-none" />
+        <div className="absolute top-1/2 left-1/4 w-[400px] h-[400px] bg-blue-50/40 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute bottom-10 right-1/4 w-[400px] h-[400px] bg-indigo-50/40 rounded-full blur-[100px] pointer-events-none" />
 
-        <div className="container mx-auto px-6 relative z-10">
-          <SectionEyebrow label="Why Reign Ads" />
-          <h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-2 leading-tight">
-            The Reign Ads <span style={{ color: '#0220aa' }}>Advantage</span>
-          </h2>
+        <div className="max-w-6xl mx-auto px-8 relative z-10">
           
+          {/* Eyebrow and Heading (AOS Scroll Animation) */}
           <motion.div 
-            className="mt-6 mb-16 h-[2px] bg-gradient-to-r from-[#0220aa]/20 via-[#0220aa]/10 to-transparent" 
-            initial={{ scaleX: 0, originX: 0 }} 
-            whileInView={{ scaleX: 1 }} 
-            viewport={{ once: true }} 
-            transition={{ duration: 0.8 }} 
-          />
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col items-start space-y-4 mb-16"
+          >
+            <p className="text-xs md:text-sm tracking-[0.3em] text-[#0220aa] uppercase font-black" style={{ fontFamily: "'Outfit', sans-serif" }}>Why Reign Ads</p>
+            
+            <h2 className="text-3xl md:text-5xl font-black uppercase leading-tight text-gray-900" style={{ fontFamily: "'Outfit', sans-serif" }}>
+              The Reign Ads <span className="text-[#0220aa]">Advantage</span>
+            </h2>
+            
+            {/* Animated accent line */}
+            <div className="h-[2px] bg-[#0220aa]/20 w-40 mt-4" />
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { 
-                n: '500+', 
-                l: 'Campaigns Delivered', 
+              {
+                n: '500+',
+                l: 'Campaigns Delivered',
                 desc: 'Hundreds of successful campaigns executed across Uganda and the wider East African region.',
-                icon: (
-                  <svg className="w-6 h-6 text-[#0220aa]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                )
-              },
-              { 
-                n: '9+', 
-                l: 'Years of Expertise', 
-                desc: 'Nearly a decade of mastery, structural excellence, and industry-leading customer satisfaction.',
-                icon: (
-                  <svg className="w-6 h-6 text-[#0220aa]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                )
-              },
-              { 
-                n: '100+', 
-                l: 'Satisfied Clients', 
-                desc: 'From leading global multinationals to local startups — we build partnerships that last.',
-                icon: (
-                  <svg className="w-6 h-6 text-[#0220aa]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                )
-              },
-            ].map((item, i) => (
-              <motion.div 
-                key={item.l} 
-                initial={{ opacity: 0, y: 30 }} 
-                whileInView={{ opacity: 1, y: 0 }} 
-                viewport={{ once: true }} 
-                transition={{ delay: i * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                whileHover={{ y: -8 }}
-                className="p-8 border border-gray-150 bg-white rounded-none flex flex-col justify-between hover:shadow-xl hover:border-[#0220aa]/15 transition-all duration-400 min-h-[220px] group relative"
-              >
-                {/* CAD corner coordinate markings */}
-                <span className="absolute top-3 left-3 text-gray-300/40 text-[9px] font-mono select-none group-hover:text-[#0220aa] transition-all duration-300 pointer-events-none">+</span>
-                <span className="absolute top-3 right-3 text-gray-300/40 text-[9px] font-mono select-none group-hover:text-[#0220aa] transition-all duration-300 pointer-events-none">+</span>
-                <span className="absolute bottom-3 left-3 text-gray-300/40 text-[9px] font-mono select-none group-hover:text-[#0220aa] transition-all duration-300 pointer-events-none">+</span>
-                <span className="absolute bottom-3 right-3 text-gray-300/40 text-[9px] font-mono select-none group-hover:text-[#0220aa] transition-all duration-300 pointer-events-none">+</span>
-
-                <div>
-                  <div className="w-12 h-12 rounded-none bg-[#0220aa]/5 flex items-center justify-center mb-6 transition-colors group-hover:bg-[#0220aa] group-hover:text-white">
-                    {item.icon}
+                accentColor: 'from-[#0220aa] to-blue-500',
+                glowColor: 'rgba(2,32,170,0.08)',
+                dial: (
+                  <div className="relative w-28 h-28 flex items-center justify-center pointer-events-none mb-6">
+                    {/* Ring 1 - Dashed */}
+                    <div className="absolute inset-0 rounded-full border-2 border-dashed border-[#0220aa]/20 animate-spin-slow" />
+                    {/* Ring 2 - Rotating pointer */}
+                    <div className="absolute inset-2 rounded-full border border-[#0220aa]/30" />
+                    <div className="absolute inset-2 rounded-full border-t-2 border-[#0220aa] animate-spin" style={{ animationDuration: '3s' }} />
+                    {/* Center stats */}
+                    <div className="text-2xl font-black font-display text-gray-900 mt-1">500+</div>
                   </div>
-                  <div className="text-4xl font-black font-display mb-1 text-gray-900">{item.n}</div>
-                  <div className="text-[11px] font-black uppercase tracking-wider mb-3 text-gray-600 font-mono">{item.l}</div>
+                )
+              },
+              {
+                n: '9+',
+                l: 'Years of Expertise',
+                desc: 'Nearly a decade of mastery, structural excellence, and industry-leading customer satisfaction.',
+                accentColor: 'from-[#0220aa] to-blue-500',
+                glowColor: 'rgba(2,32,170,0.08)',
+                dial: (
+                  <div className="relative w-28 h-28 flex items-center justify-center pointer-events-none mb-6">
+                    {/* Ring 1 - Dashed */}
+                    <div className="absolute inset-0 rounded-full border-2 border-dashed border-[#0220aa]/20 animate-spin-slow" />
+                    {/* Ring 2 - Rotating pointer */}
+                    <div className="absolute inset-2 rounded-full border border-[#0220aa]/30" />
+                    <div className="absolute inset-2 rounded-full border-t-2 border-[#0220aa] animate-spin" style={{ animationDuration: '3s' }} />
+                    {/* Center stats */}
+                    <div className="text-2xl font-black font-display text-gray-900 mt-1">9+</div>
+                  </div>
+                )
+              },
+              {
+                n: '100+',
+                l: 'Satisfied Clients',
+                desc: 'From leading global multinationals to local startups — we build partnerships that last.',
+                accentColor: 'from-[#0220aa] to-blue-500',
+                glowColor: 'rgba(2,32,170,0.08)',
+                dial: (
+                  <div className="relative w-28 h-28 flex items-center justify-center pointer-events-none mb-6">
+                    {/* Ring 1 - Dashed */}
+                    <div className="absolute inset-0 rounded-full border-2 border-dashed border-[#0220aa]/20 animate-spin-slow" />
+                    {/* Ring 2 - Rotating pointer */}
+                    <div className="absolute inset-2 rounded-full border border-[#0220aa]/30" />
+                    <div className="absolute inset-2 rounded-full border-t-2 border-[#0220aa] animate-spin" style={{ animationDuration: '3s' }} />
+                    {/* Center stats */}
+                    <div className="text-2xl font-black font-display text-gray-900 mt-1">100+</div>
+                  </div>
+                )
+              }
+            ].map((item, i) => (
+              <motion.div
+                key={item.l}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.15, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                style={{ backgroundColor: '#ffffff' }}
+                className="group relative p-8 border border-slate-200/80 hover:border-slate-300 transition-all duration-300 rounded-none flex flex-col items-center text-center overflow-hidden h-[340px] justify-between cursor-pointer shadow-sm"
+                whileHover={{ 
+                  y: -8, 
+                  boxShadow: `0 20px 40px ${item.glowColor}`,
+                  backgroundColor: '#ffffff'
+                }}
+              >
+                {/* Tech blueprint corner indicators */}
+                <div className="absolute top-2 left-2 w-2 h-2 border-t border-l border-slate-200 group-hover:border-slate-400 transition-colors" />
+                <div className="absolute top-2 right-2 w-2 h-2 border-t border-r border-slate-200 group-hover:border-slate-400 transition-colors" />
+                <div className="absolute bottom-2 left-2 w-2 h-2 border-b border-l border-slate-200 group-hover:border-slate-400 transition-colors" />
+                <div className="absolute bottom-2 right-2 w-2 h-2 border-b border-r border-slate-200 group-hover:border-slate-400 transition-colors" />
+
+                {/* Dial Graphic */}
+                {item.dial}
+
+                {/* Content */}
+                <div className="space-y-3">
+                  <h3 className="text-xs font-black uppercase tracking-widest font-mono text-slate-500 group-hover:text-gray-900 transition-colors">
+                    {item.l}
+                  </h3>
+                  <p className="text-slate-500 text-xs md:text-sm leading-relaxed font-light">
+                    {item.desc}
+                  </p>
                 </div>
-                <p className="text-gray-400 text-sm leading-relaxed font-light">{item.desc}</p>
-                
-                {/* Active line accent */}
-                <div className="absolute bottom-0 left-0 h-1 bg-transparent group-hover:bg-[#ffd22a] w-full transition-all duration-500 rounded-none" />
+
+                {/* Bottom colored loading-bar style line */}
+                <div className={`absolute bottom-0 left-0 h-1 bg-gradient-to-r ${item.accentColor} w-0 group-hover:w-full transition-all duration-500`} />
               </motion.div>
             ))}
           </div>

@@ -72,56 +72,32 @@ const PageHero = ({ eyebrow, title, highlight, sub, actions }) => (
 const About = () => {
   const values = [
     {
-      icon: (
-        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-        </svg>
-      ),
+      icon: <img src="/images/about/innovation.png" alt="Innovation" className="w-8 h-8 object-contain" style={{ filter: 'brightness(0) saturate(100%) invert(14%) sepia(82%) saturate(5260%) hue-rotate(235deg) brightness(79%) contrast(124%)' }} />,
       title: 'Innovation',
       desc: 'Constantly pushing boundaries with cutting-edge technology and creative solutions that set new industry standards.'
     },
     {
-      icon: (
-        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-        </svg>
-      ),
+      icon: <img src="/images/about/excellence.png" alt="Excellence" className="w-8 h-8 object-contain" style={{ filter: 'brightness(0) saturate(100%) invert(14%) sepia(82%) saturate(5260%) hue-rotate(235deg) brightness(79%) contrast(124%)' }} />,
       title: 'Excellence',
       desc: 'Unwavering commitment to quality in every project, from concept to execution, delivering superior results.'
     },
     {
-      icon: (
-        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-        </svg>
-      ),
+      icon: <img src="/images/about/integrity.png" alt="Integrity" className="w-8 h-8 object-contain" style={{ filter: 'brightness(0) saturate(100%) invert(14%) sepia(82%) saturate(5260%) hue-rotate(235deg) brightness(79%) contrast(124%)' }} />,
       title: 'Integrity',
       desc: 'Building trust through transparency, honesty, and ethical business practices in all our partnerships.'
     },
     {
-      icon: (
-        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-        </svg>
-      ),
+      icon: <img src="/images/about/client-focus.png" alt="Client Focus" className="w-8 h-8 object-contain" style={{ filter: 'brightness(0) saturate(100%) invert(14%) sepia(82%) saturate(5260%) hue-rotate(235deg) brightness(79%) contrast(124%)' }} />,
       title: 'Client Focus',
       desc: 'Putting our clients first, understanding their needs, and delivering solutions that exceed expectations.'
     },
     {
-      icon: (
-        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg>
-      ),
+      icon: <img src="/images/about/agility.png" alt="Agility" className="w-8 h-8 object-contain" style={{ filter: 'brightness(0) saturate(100%) invert(14%) sepia(82%) saturate(5260%) hue-rotate(235deg) brightness(79%) contrast(124%)' }} />,
       title: 'Agility',
       desc: 'Adapting quickly to market changes and client needs with flexible, responsive service delivery.'
     },
     {
-      icon: (
-        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.53 16.122a3 3 0 00-3.078-3.078a3.007 3.007 0 00-3.078 3.078a3 3 0 006.156 0zm0 0h5.656C17 16.122 20 14 20 10.5C20 7 17.5 4 12 4C6.5 4 4 7 4 10.5c0 1.25.5 2.5 1.5 3" />
-        </svg>
-      ),
+      icon: <img src="/images/about/creativity.png" alt="Creativity" className="w-8 h-8 object-contain" style={{ filter: 'brightness(0) saturate(100%) invert(14%) sepia(82%) saturate(5260%) hue-rotate(235deg) brightness(79%) contrast(124%)' }} />,
       title: 'Creativity',
       desc: 'Bringing bold, imaginative ideas to life that capture attention and create lasting brand impact.'
     },
@@ -164,26 +140,22 @@ const About = () => {
           </div>
           <SectionRule />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-            {/* Card 1: Mission */}
+            {/* Mission Section (Uncontained transparent PNG layout) */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="group border border-gray-100 bg-white hover:border-blue-200 transition-all duration-300 flex flex-col"
-              style={{ boxShadow: '0 8px 30px rgba(2,32,170,0.03)' }}
+              className="group flex flex-col transition-all duration-300"
             >
-              <div className="aspect-[16/10] overflow-hidden relative">
+              <div className="relative w-full h-[220px] md:h-[260px] flex items-center justify-center mb-6 bg-transparent select-none pointer-events-none">
                 <img
-                  src="/images/about/mission.jpg"
+                  src="/images/about/mission1.png"
                   alt="Our Mission"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                  className="max-w-full max-h-full object-contain filter drop-shadow-[0_15px_35px_rgba(2,32,170,0.15)] group-hover:scale-105 transition-transform duration-500 ease-out"
                 />
-                <div className="absolute top-4 left-4 px-3 py-1 text-xs font-black uppercase tracking-wider text-white" style={{ background: BB }}>
-                  Mission
-                </div>
               </div>
-              <div className="p-8 flex-1 flex flex-col justify-between">
+              <div className="pt-4 flex-1 flex flex-col justify-between">
                 <div>
                   <h3 className="text-xl font-black text-gray-900 mb-3" style={{ color: BB }}>Our Mission</h3>
                   <p className="text-gray-500 text-sm leading-relaxed">
@@ -194,16 +166,15 @@ const About = () => {
               </div>
             </motion.div>
 
-            {/* Card 2: Vision */}
+            {/* Vision Section (Uncontained framed image layout) */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="group border border-gray-100 bg-white hover:border-blue-200 transition-all duration-300 flex flex-col"
-              style={{ boxShadow: '0 8px 30px rgba(2,32,170,0.03)' }}
+              className="group flex flex-col transition-all duration-300"
             >
-              <div className="aspect-[16/10] overflow-hidden relative">
+              <div className="aspect-[16/10] overflow-hidden relative mb-6 rounded-lg shadow-md border border-gray-100">
                 <img
                   src="/images/about/vision.jpg"
                   alt="Our Vision"
@@ -213,7 +184,7 @@ const About = () => {
                   Vision
                 </div>
               </div>
-              <div className="p-8 flex-1 flex flex-col justify-between">
+              <div className="pt-4 flex-1 flex flex-col justify-between">
                 <div>
                   <h3 className="text-xl font-black text-gray-900 mb-3" style={{ color: BB }}>Our Vision</h3>
                   <p className="text-gray-500 text-sm leading-relaxed">
@@ -340,7 +311,7 @@ const About = () => {
             {values.map((v, i) => (
               <motion.div key={v.title} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
                 className="group p-7 border border-gray-100 bg-gray-50 hover:border-blue-200 hover:bg-white transition-all duration-300">
-                <div className="mb-4 transition-transform group-hover:scale-110" style={{ color: BG }}>{v.icon}</div>
+                <div className="mb-4 shake-on-group-hover">{v.icon}</div>
                 <h3 className="font-black text-gray-900 text-base mb-2">{v.title}</h3>
                 <p className="text-gray-400 text-sm leading-relaxed">{v.desc}</p>
                 <motion.div className="mt-4 h-[2px] w-0 group-hover:w-12 transition-all duration-500" style={{ background: BB }} />

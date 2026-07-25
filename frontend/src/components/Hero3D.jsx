@@ -124,22 +124,37 @@ const Hero3D = () => {
                                 className="font-black leading-[1.05] mb-5"
                                 style={{ 
                                     fontSize: 'clamp(2.2rem, 4.5vw, 3.5rem)',
-                                    color: '#1f2937'
+                                    color: '#1f2937',
+                                    fontFamily: "'Outfit', sans-serif"
                                 }}
                             >
                                 <div className="flex flex-wrap justify-center lg:justify-start gap-x-3 gap-y-2">
-                                    {/* First line: "Outdoor Advertising" */}
+                                    {/* First line: "Out of Home Advertising" */}
                                     <motion.span
                                         initial={{ opacity: 0, y: 50 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.8, delay: 1.3 }}
                                     >
-                                        Outdoor
+                                        Out
                                     </motion.span>
                                     <motion.span
                                         initial={{ opacity: 0, y: 50 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        transition={{ duration: 0.8, delay: 1.6 }}
+                                        transition={{ duration: 0.8, delay: 1.5 }}
+                                    >
+                                        of
+                                    </motion.span>
+                                    <motion.span
+                                        initial={{ opacity: 0, y: 50 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.8, delay: 1.7 }}
+                                    >
+                                        Home
+                                    </motion.span>
+                                    <motion.span
+                                        initial={{ opacity: 0, y: 50 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.8, delay: 1.9 }}
                                     >
                                         Advertising
                                     </motion.span>
@@ -149,14 +164,14 @@ const Hero3D = () => {
                                     <motion.span
                                         initial={{ opacity: 0, y: 50 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        transition={{ duration: 0.8, delay: 1.9 }}
+                                        transition={{ duration: 0.8, delay: 2.1 }}
                                     >
                                         that
                                     </motion.span>
                                     <motion.span
                                         initial={{ opacity: 0, y: 50 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        transition={{ duration: 0.8, delay: 2.2 }}
+                                        transition={{ duration: 0.8, delay: 2.3 }}
                                         style={{ color: BRAND_BLUE }}
                                     >
                                         Takes
@@ -175,7 +190,7 @@ const Hero3D = () => {
                                     <motion.span
                                         initial={{ opacity: 0, y: 50 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        transition={{ duration: 0.8, delay: 2.8 }}
+                                        transition={{ duration: 0.8, delay: 2.7 }}
                                         style={{ color: BRAND_BLUE }}
                                     >
                                         Brand
@@ -183,7 +198,7 @@ const Hero3D = () => {
                                     <motion.span
                                         initial={{ opacity: 0, y: 50, scale: 0.8 }}
                                         animate={{ opacity: 1, y: 0, scale: 1 }}
-                                        transition={{ duration: 1.0, delay: 3.1, type: "spring", bounce: 0.4 }}
+                                        transition={{ duration: 1.0, delay: 2.9, type: "spring", bounce: 0.4 }}
                                         style={{ color: BRAND_BLUE }}
                                     >
                                         Places
@@ -195,7 +210,7 @@ const Hero3D = () => {
                             <motion.p
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.8, delay: 3.7 }}
+                                transition={{ duration: 0.8, delay: 3.4 }}
                                 className="text-gray-600 max-w-lg mx-auto lg:mx-0 mb-8 leading-relaxed text-base"
                             >
                                 Strategic billboard placements, LED screens, and large-format printing

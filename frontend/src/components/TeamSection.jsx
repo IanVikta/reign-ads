@@ -271,11 +271,11 @@ const TeamSection = () => {
                       </div>
                       
                       {/* Image */}
-                      <div className="w-full sm:w-40 relative overflow-hidden bg-gray-100 order-first sm:order-last">
+                      <div className="w-full sm:w-40 h-64 sm:h-auto relative overflow-hidden bg-gray-100 order-first sm:order-last">
                         <img
                           src={member.image}
                           alt={member.name}
-                          className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 ${
+                          className={`absolute inset-0 w-full h-full object-cover object-top transition-all duration-500 ${
                             activeCard === member.id ? 'scale-110 opacity-100' : 'scale-100 opacity-90'
                           }`}
                         />

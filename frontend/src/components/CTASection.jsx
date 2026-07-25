@@ -18,10 +18,10 @@ const CTASection = () => {
     target: sectionRef,
     offset: ['start end', 'end start'],
   });
-  const imgY = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
+  const imgY = useTransform(scrollYProgress, [0, 1], ['-4%', '0%']);
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden" style={{ background: '#07090f' }}>
+    <section ref={sectionRef} className="relative md:overflow-visible overflow-hidden" style={{ background: '#07090f' }}>
 
       {/* Gold top rule */}
       <div className="h-[3px]" style={{ background: BRAND_GOLD }} />
@@ -36,7 +36,7 @@ const CTASection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="py-14 pr-0 md:pr-14 z-10 relative"
+            className="pt-14 pb-[310px] md:py-14 pr-0 md:pr-14 z-10 relative"
           >
             {/* Eyebrow */}
             <div className="flex items-center gap-3 mb-5">
@@ -99,34 +99,27 @@ const CTASection = () => {
             </div>
           </motion.div>
 
-          {/* Right: Parallax image */}
-          <div className="hidden md:block relative h-full min-h-[420px] overflow-hidden">
+          {/* Right: Spacer column */}
+          <div className="hidden md:block relative h-full min-h-[440px]">
             {/* Blue vertical accent line */}
             <div
               className="absolute left-0 top-0 bottom-0 w-[3px] z-10"
               style={{ background: BRAND_BLUE }}
             />
-            <motion.div
-              style={{ y: imgY }}
-              className="absolute inset-0"
-            >
-              <img
-                src="/images/billboards/spotlight.jpeg"
-                alt="Brand in the spotlight"
-                className="w-full h-full object-cover"
-                style={{ filter: 'brightness(0.75)' }}
-              />
-              {/* Left-fade so image blends into text */}
-              <div
-                className="absolute inset-0"
-                style={{
-                  background: 'linear-gradient(to right, #07090f 0%, transparent 40%)',
-                }}
-              />
-            </motion.div>
           </div>
         </div>
       </div>
+
+      {/* 3D Billboard sitting exactly on the blue line */}
+      <motion.div
+        className="absolute left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 right-auto md:right-[1.5%] lg:right-[3%] xl:right-[6%] top-auto md:top-[-90px] bottom-[2px] w-[290px] md:w-[48%] lg:w-[43%] h-[290px] md:h-auto z-20 flex items-end justify-center pointer-events-none"
+      >
+        <img
+          src="/images/square.png"
+          alt="Brand in the spotlight"
+          className="w-full h-full object-contain filter drop-shadow-[0_20px_45px_rgba(2,32,170,0.3)] md:drop-shadow-[0_25px_60px_rgba(2,32,170,0.35)] select-none"
+        />
+      </motion.div>
 
       {/* Blue bottom rule */}
       <div className="h-[3px]" style={{ background: BRAND_BLUE }} />

@@ -334,3 +334,14 @@ input[type="file"]::-webkit-file-upload-button:hover {
     font-size: 16px !important;
   }
 }
+
+/* Value cards shake / wiggle hover effect */
+@keyframes shake-mild {
+  0%, 100% { transform: rotate(0deg) translateX(0); }
+  25% { transform: rotate(-3deg) translateX(-1px); }
+  75% { transform: rotate(3deg) translateX(1px); }
+}
+
+.group:hover .shake-on-group-hover {
+  animation: shake-mild 0.35s ease-in-out;
+}
