@@ -40,14 +40,6 @@ const BlogCard = ({ post, index }) => {
             style={{ background: BB, color: '#fff' }}>
             {new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
           </div>
-          {/* Hover overlay */}
-          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-400 flex items-end p-5"
-            style={{ background: `linear-gradient(to top, ${BB}ee, transparent)` }}>
-            <span className="text-xs font-extrabold uppercase tracking-widest px-4 py-2"
-              style={{ background: BG, color: BB }}>
-              Read Article →
-            </span>
-          </div>
         </div>
         {/* Content */}
         <div className="p-6">

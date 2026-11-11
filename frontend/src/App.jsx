@@ -9,7 +9,7 @@ import WhatsAppChat from './components/WhatsAppChat'
 
 import Home from './pages/HomeRedesign'
 import About from './pages/About'
-import Services from './pages/Services'
+import Services from './pages/Services.jsx'
 import Portfolio from './pages/Portfolio'
 import Clients from './pages/Clients'
 import Contact from './pages/Contact'

@@ -112,12 +112,12 @@ const CTASection = () => {
 
       {/* 3D Billboard sitting exactly on the blue line */}
       <motion.div
-        className="absolute left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 right-auto md:right-[1.5%] lg:right-[3%] xl:right-[6%] top-auto md:top-[-90px] bottom-[2px] w-[290px] md:w-[48%] lg:w-[43%] h-[290px] md:h-auto z-20 flex items-end justify-center pointer-events-none"
+        className="absolute left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 right-auto md:right-[1.5%] lg:right-[3%] xl:right-[6%] top-auto md:top-[-90px] bottom-[3px] w-[290px] md:w-[48%] lg:w-[43%] h-[290px] md:h-auto z-20 flex items-end justify-center pointer-events-none"
       >
         <img
           src="/images/square.png"
           alt="Brand in the spotlight"
-          className="w-full h-full object-contain filter drop-shadow-[0_20px_45px_rgba(2,32,170,0.3)] md:drop-shadow-[0_25px_60px_rgba(2,32,170,0.35)] select-none"
+          className="w-full h-full object-contain object-bottom filter drop-shadow-[0_20px_45px_rgba(2,32,170,0.3)] md:drop-shadow-[0_25px_60px_rgba(2,32,170,0.35)] select-none"
         />
       </motion.div>
 

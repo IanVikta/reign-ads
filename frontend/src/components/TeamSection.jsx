@@ -184,35 +184,29 @@ const TeamSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="relative pt-12 md:pt-32 pb-4"
+            className="relative pt-12 md:pt-44 pb-4"
           >
-            {/* Desktop Header aligned beside the head */}
-            <div className="hidden md:block absolute top-[30px] left-[42%] lg:left-[45%] z-30 pr-8">
+            {/* Desktop Header aligned beside the head, sitting cleanly above the card */}
+            <div className="hidden md:block absolute top-2 left-[42%] lg:left-[45%] right-0 z-30 pr-6">
               <SectionEyebrow label="Meet The Team" />
-              <h2 className="text-4xl lg:text-5xl font-black text-gray-900 leading-tight">
+              <h2 className="text-3xl lg:text-4xl xl:text-5xl font-black text-gray-900 leading-tight">
                 The People Behind <span style={{ color: BB }}>Our Success</span>
               </h2>
             </div>
             
             <div className="flex flex-col md:flex-row items-stretch bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 group relative rounded-3xl md:rounded-none overflow-visible shadow-2xl md:shadow-none">
               {/* Image Side */}
-              <div className="md:w-2/5 relative min-h-[380px] md:min-h-[480px] overflow-visible">
+              <div className="md:w-2/5 relative min-h-[300px] sm:min-h-[340px] md:min-h-[480px] overflow-visible">
                 <img
                   src={teamLeader.image}
                   alt={teamLeader.name}
-                  className="absolute bottom-0 left-1/2 -translate-x-1/2 md:left-4 md:translate-x-0 w-[90%] md:w-[115%] max-w-none h-[115%] md:h-[135%] object-contain object-bottom z-20 filter drop-shadow-[0_20px_45px_rgba(0,0,0,0.65)] transition-transform duration-700 group-hover:scale-[1.03] origin-bottom pointer-events-none -translate-y-10 md:translate-y-0"
+                  className="absolute bottom-0 left-1/2 -translate-x-1/2 md:left-4 md:translate-x-0 w-auto md:w-[115%] max-w-none h-[122%] md:h-[135%] object-contain object-bottom z-20 filter drop-shadow-[0_20px_45px_rgba(0,0,0,0.65)] transition-transform duration-700 group-hover:scale-[1.03] origin-bottom pointer-events-none"
                 />
-                <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-transparent via-transparent to-gray-900/95 pointer-events-none z-30 md:z-10" />
+                <div className="Title-Gradient absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-transparent via-transparent to-gray-900/95 pointer-events-none z-10" />
               </div>
               
               {/* Content Side */}
               <div className="md:w-3/5 p-8 md:p-12 flex flex-col justify-center relative">
-                {/* Large decorative number */}
-                <div className="absolute top-6 right-6 text-[120px] font-black opacity-5 leading-none select-none"
-                  style={{ color: BG }}>
-                  01
-                </div>
-                
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -266,7 +260,6 @@ const TeamSection = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {otherMembers.map((member, index) => {
               const isLeft = index % 2 === 0;
-              const number = String(index + 2).padStart(2, '0');
               
               return (
                 <motion.div
@@ -286,17 +279,7 @@ const TeamSection = () => {
                     <div className="flex flex-col sm:flex-row items-stretch min-h-[200px]">
                       {/* Content */}
                       <div className="flex-1 p-6 relative bg-white">
-                        {/* Number badge */}
-                        <div className="absolute top-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-sm font-black border-2"
-                          style={{ 
-                            borderColor: activeCard === member.id ? BG : BB,
-                            color: activeCard === member.id ? BG : BB,
-                            background: activeCard === member.id ? `${BG}20` : `${BB}10`
-                          }}>
-                          {number}
-                        </div>
-                        
-                        <div className="pr-16">
+                        <div>
                           <h3 className="text-xl font-black text-gray-900 mb-2 leading-tight">
                             {member.name}
                           </h3>

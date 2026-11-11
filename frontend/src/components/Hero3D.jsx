@@ -125,7 +125,7 @@ const Hero3D = () => {
                                 style={{ 
                                     fontSize: 'clamp(2.2rem, 4.5vw, 3.5rem)',
                                     color: '#1f2937',
-                                    fontFamily: "'Outfit', sans-serif"
+                                    fontFamily: "'Inter', sans-serif"
                                 }}
                             >
                                 <div className="flex flex-wrap justify-center lg:justify-start gap-x-3 gap-y-2">

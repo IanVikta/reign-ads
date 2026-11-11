@@ -1,42 +1,42 @@
 export const services = [
   {
     id: 'out-of-home',
-    title: 'Out of home',
-    description: 'Command visibility with high-impact billboards, digital LED displays, and street poles in premier high-traffic locations.',
+    title: 'Out of Home',
+    description: 'Billboards, digital LED screens, street poles, and highway gantries placed across prime high-traffic corridors.',
     image: '/images/billboards/Billboard_advertising.jpg',
     portfolioCategory: 'out-of-home',
-    features: ['Highways', 'LED Screens', 'Street Poles', 'Gantries']
+    features: ['Billboards', 'LED Screens', 'Street Poles', 'Gantries']
   },
   {
     id: 'branding',
     title: 'Branding',
-    description: 'Transform your brand physical footprint. High-impact automobile wrapping, office wall branding, and professional signage.',
+    description: 'Complete interior and exterior branding including vehicle wraps, wall graphics, office styling, and 3D signage.',
     image: '/images/billboards/Wall-branding.jpg',
     portfolioCategory: 'branding',
-    features: ['Vehicle Wraps', 'Wall Branding', '3D Signage', 'Office Styling']
+    features: ['Vehicle Wraps', 'Wall Branding', '3D Signage', 'Office Branding']
   },
   {
     id: 'large-format-printing',
-    title: 'Large format printing',
-    description: 'Vibrant, high-resolution printing for large outdoor media, PVC banners, vinyl stickers, and weather-proof wraps.',
+    title: 'Large Format Printing',
+    description: 'High-resolution printing for outdoor PVC banners, vinyl graphics, backlit displays, and weather-resistant mesh.',
     image: '/images/billboards/LargeFormat-printing.jpg',
     portfolioCategory: 'large-format-printing',
-    features: ['PVC Banners', 'Stickers & Vinyls', 'Backlit Prints', 'Mesh Printing']
+    features: ['PVC Banners', 'Vinyl & Stickers', 'Backlit Prints', 'Mesh Banners']
   },
   {
     id: 'events-branding',
-    title: 'Events branding and management',
-    description: 'Turnkey event design and execution, custom exhibition stands, stage fabrication, brand activations, and setup operations.',
+    title: 'Events Branding & Management',
+    description: 'Custom exhibition stands, stage fabrication, media backdrops, and full on-ground setup for corporate events and activations.',
     image: '/images/campaigns/CAF.jpg',
     portfolioCategory: 'events-branding',
     features: ['Exhibition Stands', 'Stage Production', 'Media Backdrops', 'Activations']
   },
   {
     id: 'promotional-materials',
-    title: 'Promotional materials',
-    description: 'Premium corporate gifts, merchandise, customized apparel, stationary, and branded giveaways that lock in client recall.',
+    title: 'Promotional Materials',
+    description: 'Custom-branded apparel, corporate gift hampers, office stationery, and promotional merchandise for teams and clients.',
     image: '/images/services/fabrication.jpg',
     portfolioCategory: 'promotional-materials',
-    features: ['Corporate Hampers', 'Branded Apparel', 'Custom Giveaways', 'Brand Merchandise']
+    features: ['Corporate Gifts', 'Branded Apparel', 'Stationery', 'Merchandise']
   }
 ];

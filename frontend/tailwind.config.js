@@ -19,9 +19,9 @@ export default {
         brandGold: '#ffd22a',   // Golden Dream – accent (35%)
       },
       fontFamily: {
-        sans: ['Montserrat', 'Inter', 'sans-serif'],
-        display: ['Montserrat', 'Outfit', 'sans-serif'],
-        montserrat: ['Montserrat', 'sans-serif'],
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        display: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        montserrat: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
       },
       backgroundImage: {
         'gradient-gold': 'linear-gradient(to right, #D4AF37, #FFD700, #D4AF37)',

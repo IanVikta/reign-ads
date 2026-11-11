@@ -49,69 +49,58 @@ const SharpGridCard = ({ service, index, colSpanClass, heightClass }) => {
   return (
     <Link 
       to={`/portfolio?category=${service.portfolioCategory}`}
-      className={`${colSpanClass} ${heightClass} relative overflow-hidden group border border-gray-200/10 hover:border-[#ffd22a]/30 transition-colors duration-500 rounded-none flex flex-col justify-between p-6 bg-gray-950`}
+      className={`${colSpanClass} ${heightClass} relative overflow-hidden group rounded-none flex flex-col justify-end p-7 md:p-8 bg-gray-950`}
     >
       {/* Background Image */}
       <img
         src={service.image}
         alt={service.title}
-        className="absolute inset-0 w-full h-full object-cover opacity-85 group-hover:opacity-65 group-hover:scale-105 transition-all duration-700 pointer-events-none rounded-none"
+        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none rounded-none"
       />
       
-      {/* Sharp Technical Dark Vignette Overlay */}
+      {/* Clean Editorial Gradient Overlay */}
       <div 
-        className="absolute inset-0 z-10 pointer-events-none bg-gradient-to-t from-black/90 via-black/35 to-transparent"
+        className="absolute inset-0 z-10 pointer-events-none bg-gradient-to-t from-black/85 via-black/25 to-transparent group-hover:from-black/90 group-hover:via-black/60 transition-colors duration-500"
       />
-
-      {/* Subtle Royal Azure tint on hover */}
-      <div 
-        className="absolute inset-0 z-10 opacity-0 group-hover:opacity-[0.12] transition-opacity duration-500 pointer-events-none bg-[#0220aa]"
-      />
-
-      {/* CAD corner coordinate markings (Blueprint design) */}
-      <span className="absolute top-3 left-3 text-white/30 text-[9px] font-mono select-none group-hover:text-[#ffd22a] group-hover:scale-110 transition-all duration-300 pointer-events-none">+</span>
-      <span className="absolute top-3 right-3 text-white/30 text-[9px] font-mono select-none group-hover:text-[#ffd22a] group-hover:scale-110 transition-all duration-300 pointer-events-none">+</span>
-      <span className="absolute bottom-3 left-3 text-white/30 text-[9px] font-mono select-none group-hover:text-[#ffd22a] group-hover:scale-110 transition-all duration-300 pointer-events-none">+</span>
-      <span className="absolute bottom-3 right-3 text-white/30 text-[9px] font-mono select-none group-hover:text-[#ffd22a] group-hover:scale-110 transition-all duration-300 pointer-events-none">+</span>
 
       {/* Content Area */}
-      <div className="relative z-20 mt-auto">
-        {/* Large Title */}
-        <h3 className="text-xl md:text-2xl font-black text-white uppercase tracking-wide font-display leading-tight mb-1 group-hover:text-[#ffd22a] transition-colors duration-300">
-          {service.title}
-        </h3>
-
-        {/* Expandable details wrapper (slides up on desktop hover, always open on mobile) */}
-        <div className="lg:max-h-0 lg:opacity-0 group-hover:lg:max-h-40 group-hover:lg:opacity-100 transition-all duration-500 ease-out overflow-hidden">
-          <p className="text-white/80 text-xs sm:text-[13px] leading-relaxed font-light mt-3 max-w-xl">
-            {service.description}
-          </p>
-
-          {/* Tags */}
-          <div className="flex flex-wrap gap-1.5 mt-4">
-            {service.features.map(f => (
-              <span 
-                key={f} 
-                className="text-[8px] font-bold text-white bg-white/10 px-2 py-0.5 border border-white/10 uppercase tracking-wider font-mono"
-              >
-                {f}
-              </span>
-            ))}
-          </div>
+      <div className="relative z-20 w-full">
+        {/* Title Row with subtle arrow */}
+        <div className="flex items-end justify-between gap-4">
+          <h3 className="text-xl md:text-2xl font-extrabold text-white tracking-tight leading-snug">
+            {service.title}
+          </h3>
+          <span 
+            className="w-8 h-8 flex-shrink-0 flex items-center justify-center bg-white/10 backdrop-blur-sm text-white text-sm group-hover:bg-[#ffd22a] group-hover:text-[#0220aa] transition-all duration-300"
+          >
+            →
+          </span>
         </div>
 
-        {/* CTA Link - fades up on hover */}
-        <div 
-          className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] font-mono mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          style={{ color: BG }}
-        >
-          <span>Explore Portfolio</span>
-          <span>→</span>
+        {/* Expandable details wrapper (slides up cleanly on desktop hover, visible on mobile) */}
+        <div className="lg:max-h-0 lg:opacity-0 group-hover:lg:max-h-48 group-hover:lg:opacity-100 transition-all duration-500 ease-out overflow-hidden">
+          <div className="pt-3 mt-3 border-t border-white/15">
+            <p className="text-white/85 text-sm leading-relaxed max-w-xl">
+              {service.description}
+            </p>
+
+            {/* Clean inline service list instead of monospace boxes */}
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-3 text-xs font-medium text-[#ffd22a]">
+              {service.features.map((f, i) => (
+                <span key={f} className="inline-flex items-center gap-2">
+                  <span>{f}</span>
+                  {i < service.features.length - 1 && (
+                    <span className="text-white/30">·</span>
+                  )}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Sharp Accent Line */}
-      <div className="absolute bottom-0 left-0 h-[3px] bg-[#ffd22a] w-0 group-hover:w-full transition-all duration-500" />
+      {/* Bottom Accent Line */}
+      <div className="absolute bottom-0 left-0 h-[3px] bg-[#ffd22a] w-0 group-hover:w-full transition-all duration-500 z-20" />
     </Link>
   );
 };

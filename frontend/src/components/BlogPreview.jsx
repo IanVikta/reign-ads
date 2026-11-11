@@ -61,9 +61,6 @@ const BlogCard = ({ post, index, featured = false }) => {
 
           {/* Content */}
           <div className="flex flex-col flex-grow p-8 border-t border-gray-100 bg-white">
-            <p className="text-[10px] font-mono font-bold uppercase tracking-widest mb-2" style={{ color: BRAND_BLUE }}>
-              [ INSIGHT_FEATURED ]
-            </p>
             <h3 className="text-2xl md:text-3xl font-black text-gray-900 leading-snug mb-4 group-hover:text-blue-700 transition-colors font-display uppercase">
               {post.title}
             </h3>
@@ -119,9 +116,6 @@ const BlogCard = ({ post, index, featured = false }) => {
         {/* Content */}
         <div className="flex flex-col flex-grow p-4 justify-between bg-white">
           <div>
-            <p className="text-[9px] font-mono font-bold uppercase tracking-widest mb-1" style={{ color: BRAND_BLUE }}>
-              [ INSIGHT_ROW_0{index} ]
-            </p>
             <h3 className="font-black text-xs md:text-sm text-gray-900 leading-snug mb-1 group-hover:text-blue-700 transition-colors line-clamp-2 uppercase font-display">
               {post.title}
             </h3>
